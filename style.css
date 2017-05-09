@@ -1,0 +1,219 @@
+body.toplevel_page_dinet_admin_plugin main,
+body.toplevel_page_dinet_plugin main {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.dinet_page_title {
+    font-size: 2rem;
+    font-weight: 400;
+}
+
+.dinet_citation {
+    font-size: 1rem;
+    color: #777;
+}
+
+body.toplevel_page_dinet_admin_plugin section,
+body.toplevel_page_dinet_plugin section,
+body.plugins_page_dinet_add_food main.dinet_add_food {
+    background-color: #fff;
+    border: 1px solid #e5e5e5;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .04);
+    padding: 0 1rem 1rem 1rem;
+    margin-right: 1rem;
+}
+
+body.toplevel_page_dinet_admin_plugin section header h2,
+body.toplevel_page_dinet_plugin section header h2 {
+    font-weight: 400;
+    font-size: 1.3rem;
+}
+
+.dinet_add_eaten_food {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.dinet_add_eaten_food table {
+    width: 100%;
+}
+
+.dinet_add_eaten_food th,
+.dinet_add_eaten_food tr.food_item {
+    width: 30%;
+    text-align: left;
+}
+
+.dinet_add_eaten_food tr.food_item input.quantity {
+    margin-right: 0;
+}
+
+.dinet_add_eaten_food tr.food_item input.add_input {
+    color: #0073aa;
+    font-size: 13px;
+    font-weight: 600;
+    background: #f7f7f7;
+    border-bottom-right-radius: 2px;
+    border-top-right-radius: 2px;
+    border: 1px solid #ccc;
+    margin-left: -4px;
+    border-left: 0;
+    cursor: pointer;
+    transition: 0.3s;
+    height: 28px;
+    width: 28px;
+    padding-bottom: 1px;
+}
+
+.dinet_add_eaten_food tr.food_item input.add_input:hover {
+    color: #fff;
+    background: #0073aa;
+    border: 1px solid #006291;
+}
+
+.dinet_add_eaten_food .pagination_button {
+    color: #0073aa;
+    font-size: 13px;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    background: #f7f7f7;
+    border-radius: 2px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    transition: 0.3s;
+    width: 100px;
+    margin-top: 1rem;
+}
+
+.dinet_add_eaten_food .pagination_button:hover {
+    color: #fff;
+    background: #0073aa;
+    border: 1px solid #006291;
+}
+
+body.toplevel_page_dinet_plugin section.add_info{
+    text-align: center;
+}
+
+body.toplevel_page_dinet_plugin section.add_info label{
+    min-width: 50px;
+    margin: 1rem 0;
+    text-align: left;
+    display: inline-block;
+}
+
+body.toplevel_page_dinet_plugin section.add_info .save_info:hover{
+    color: #fff;
+    background: #0073aa;
+    border: 1px solid #006291;
+}
+
+body.toplevel_page_dinet_plugin section.add_info .save_info{
+    color: #0073aa;
+    font-size: 13px;
+    font-weight: 600;
+    background: #f7f7f7;
+    border-radius: 2px;
+    border: 1px solid #ccc;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    margin: 1rem auto;
+    transition: 0.3s;
+}
+
+.toast_add_eaten_food {
+    width: 100%;
+    position: fixed;
+    margin-left: -20px;
+    bottom: calc(50% - 50px);
+    color: #F0F0F0;
+    font-size: 20px;
+    padding: 10px;
+    text-align: center;
+}
+
+.statChart{
+    width: 500px;
+}
+
+.search_bar{
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    width: 50%;
+}
+
+.dinet_add_new_food{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.dinet_add_new_food > div {
+    margin-right: 5rem;
+}
+
+.dinet_info_add_new_food label{
+    display: inline-block;
+    min-width: 280px;
+}
+
+.dinet_info_add_new_food input{
+    display: inline-block;
+    min-width: 212px;
+}
+
+@media all and (max-width: 544px){
+
+    .citation{
+        display: none;
+    }
+
+    body.toplevel_page_dinet_plugin section{
+        width: 100%;
+    }
+
+    .dinet_add_eaten_food th:nth-child(2),
+    .food_item td:nth-child(2){
+        display: none;
+    }
+
+}
+
+@media all and (max-width: 782px){
+
+    .dinet_add_eaten_food tr.food_item input.add_input{
+        padding-top: 12px;
+        padding-bottom: 26px;
+    }
+
+    .search_bar{
+        width: 100%;
+    }
+}
+
+@media all and (max-width: 1235px){
+    .statChart{
+        width: 100%;
+    }
+
+    .dinet_chart{
+        width: 100%;
+    }
+
+    .IMC {
+        margin-top: 1rem;
+        width: calc(50% - 2rem - 20px);
+    }
+
+    .add_info{
+        margin-top: 1rem;
+        width: calc(50% - 2rem - 20px);
+
+    }
+
+    .quantity{
+        width: 70%;
+    }
+}
