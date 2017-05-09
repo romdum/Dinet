@@ -3,7 +3,7 @@
 require_once "controllers/ChartController.php";
 require_once "controllers/CitationController.php";
 require_once "controllers/AjaxRequestController.php";
-require_once "controllers/FoodPaginationController.php";
+require_once "controllers/FoodListController.php";
 require_once "controllers/BMIPatientController.php";
 require_once "models/Food.php";
 require_once "models/Patient.php";
@@ -19,9 +19,9 @@ class Dinet_customer
 		//load script
 		add_action( "init", array( $this, "load_script" ) );
 
-		add_action( "wp_ajax_add_eaten_food", array( new AjaxRequestController(), "add_eaten_food" ) );
-		add_action( "wp_ajax_food_pagination", array( new AjaxRequestController(), "pagination_food" ) );
-		add_action( "wp_ajax_food_search", array( new AjaxRequestController(), "food_search" ) );
+		add_action( "wp_ajax_add_eaten_food", array( new FoodListController(), "add_eaten_food" ) );
+		add_action( "wp_ajax_food_pagination", array( new FoodListController(), "pagination_food" ) );
+		add_action( "wp_ajax_food_search", array( new FoodListController(), "food_search" ) );
 
 		// add plugin menu
 		add_action( 'admin_menu', array( $this, 'dinet_add_plugin_menu' ) );
@@ -83,7 +83,7 @@ class Dinet_customer
 		$Citation = new CitationController();
 		$Patient = new Patient();
 		$BMI = new BMIPatientController( $Patient );
-		$FoodPagination = new FoodPaginationController();
+		$FoodPagination = new FoodListController();
 
 		include "views/customer/header.php";
 		if( self::$config->display_chart )
