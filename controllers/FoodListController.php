@@ -38,7 +38,7 @@ class FoodListController
         global $wpdb;
 
         $q = $wpdb->get_results(
-        	"SELECT * FROM {$wpdb->prefix}dinet_food ORDER BY Désignation LIMIT {$this->page},10"
+        	"SELECT * FROM " . Dinet::$table_food . " ORDER BY Désignation LIMIT {$this->page},10"
         	, ARRAY_A
         );
 
@@ -63,7 +63,7 @@ class FoodListController
 		$this->page = $_POST["page"];
 
 		$q = $wpdb->get_results(
-			"SELECT * FROM {$wpdb->prefix}dinet_food ORDER BY Désignation LIMIT {$this->page},10"
+			"SELECT * FROM " . Dinet::$table_food . " ORDER BY Désignation LIMIT {$this->page},10"
 			, ARRAY_A );
 
 		echo json_encode( $q );
@@ -81,7 +81,7 @@ class FoodListController
 		$search = $_POST["search"];
 
 		$q = $wpdb->get_results(
-			"SELECT * FROM {$wpdb->prefix}dinet_food WHERE Désignation LIKE \"%{$search}%\" ORDER BY Désignation LIMIT 0,10"
+			"SELECT * FROM " . Dinet::$table_food . " WHERE Désignation LIKE \"%{$search}%\" ORDER BY Désignation LIMIT 0,10"
 			, ARRAY_A );
 
 		echo json_encode( $q );
@@ -100,7 +100,7 @@ class FoodListController
 		$quantity = htmlspecialchars( $_POST["quantity"] );
 
 		$GLOBALS["wpdb"]->insert(
-			$GLOBALS['wpdb']->prefix . "dinet_food_users",
+			Dinet::$table_food_users,
 			array(
 				"user_id"  => $user_id,
 				"food_id"  => $food_id,

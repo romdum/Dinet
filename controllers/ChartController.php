@@ -61,8 +61,8 @@ class ChartController
 		      SUM((`Glucides (g/100g)` * fu.quantity /100)) AS {$labels[3]},
 		      SUM((`Lipides (g/100g)` * fu.quantity /100)) AS {$labels[4]},
 		      SUM((`Sucres (g/100g)` * fu.quantity /100)) AS {$labels[5]}
-		    FROM {$pre}dinet_food AS f
-		      JOIN {$pre}dinet_food_users AS fu ON f.id = food_id
+		    FROM " . Dinet::$table_food . " AS f
+		      JOIN " . Dinet::$table_food_users . " AS fu ON f.id = food_id
 		    WHERE user_id = {$current_user_id}
 		    AND fu.eat_date BETWEEN '{$d1}' AND '{$d2}'";
 
