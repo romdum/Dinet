@@ -19,6 +19,8 @@ $(document).ready(function ()
 
 function ajax_add_eaten_food(food_id, quantity)
 {
+    // BUG: food name doesnt work
+    // BUG: data-fodd-user-id doesnt work 
     $.post({
         url     : myAjax.ajaxurl,
         dataType: "json",
@@ -31,6 +33,15 @@ function ajax_add_eaten_food(food_id, quantity)
         success : function (response)
         {
             $(".quantity").val("");
+            $('#table_last_food tbody').append('' +
+            '<tr class="">' +
+                '<td>'+ getCurrentDate() +'</td>'+
+                '<td>'+ 0 +'</td>'+
+                '<td>'+ quantity +'</td>'+
+                '<td>' +
+                    '<button type="button" class="btn-delete" data-food-user-id="'+ 0 +'" name="delete-food"><span class="dashicons dashicons-trash"></span></button>' +
+                '</td>' +
+            '</tr>');
             makeToast("Consommation ajoutée", "#57b676");
             updateChart(response.datasets);
         },

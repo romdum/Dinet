@@ -2,7 +2,6 @@
 
 require_once "controllers/ChartController.php";
 require_once "controllers/CitationController.php";
-require_once "controllers/AjaxRequestController.php";
 require_once "controllers/FoodListController.php";
 require_once "controllers/BMIPatientController.php";
 require_once "models/Food.php";
@@ -22,6 +21,7 @@ class Dinet_customer
 		add_action( "wp_ajax_add_eaten_food", array( new FoodListController(), "add_eaten_food" ) );
 		add_action( "wp_ajax_food_pagination", array( new FoodListController(), "pagination_food" ) );
 		add_action( "wp_ajax_food_search", array( new FoodListController(), "food_search" ) );
+		add_action( "wp_ajax_ajax_remove_eaten_food", array( new FoodListController(), "ajax_remove_eaten_food" ) );
 
 		// add plugin menu
 		add_action( 'admin_menu', array( $this, 'dinet_add_plugin_menu' ) );
@@ -56,6 +56,13 @@ class Dinet_customer
 			"nonce"   => wp_create_nonce( "search_nonce" ),
 		) );
 		wp_enqueue_script( "plugin_dinet_script_search" );
+
+		wp_register_script( "plugin_dinet_script_remove_eaten_food", PLUGIN_PATH . "js/remove_eaten_food.js", array( "jquery" ) );
+		wp_localize_script( "plugin_dinet_script_remove_eaten_food", "myAjax", array(
+			"ajaxurl" => admin_url( "admin-ajax.php" ),
+			"nonce"   => wp_create_nonce( "search_nonce" ),
+		) );
+		wp_enqueue_script( "plugin_dinet_script_remove_eaten_food" );
 	}
 
 	function dinet_add_plugin_menu()
@@ -64,6 +71,8 @@ class Dinet_customer
 			$this,
 			"display_dinet",
 		), "dashicons-carrot", 26 );
+        add_submenu_page( 'dinet_plugin', 'Mon suivi', 'Mon suivi', 'read', 'dinet_monitoring_page', array( $this, 'display_dinet' ) );
+		remove_submenu_page( 'dinet_plugin', 'dinet_plugin' );
 	}
 
 	function add_admin_menu_item( $wp_admin_bar )
@@ -84,17 +93,20 @@ class Dinet_customer
 		$Patient = new Patient();
 		$BMI = new BMIPatientController( $Patient );
 		$FoodPagination = new FoodListController();
+        $limit = 5;
 
 		include "views/customer/header.php";
 		if( self::$config->display_chart )
 		{
-			include "views/customer/chart.php";
+            echo '<main>';
+			include "views/chart.php";
 		}
 		if( self::$config->display_bmi )
 		{
 			include "views/customer/imc.php";
 		}
 		include "views/customer/form_info.php";
+		include "views/last_food.php";
 		include "views/customer/add_eaten_food.php";
 	}
 }

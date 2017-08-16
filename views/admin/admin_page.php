@@ -1,37 +1,31 @@
-<?php
-	global $wpdb;
-	$q = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}users", ARRAY_A);
-?>
 		<main>
-			<section class="aliment">
+			<section class="patient_list">
 				<header>
-					<h2>Gestion des aliments</h2>
+					<h2>Liste des patients</h2>
+					<a href="<?= admin_url( 'user-new.php' ) ?>"><button type="button" name="button" class="button button-primary">Ajouter</button></a>
 				</header>
-				<div>
-					<a href="admin.php?page=dinet_add_food">Ajouter un aliment</a>
-				</div>
-			</section>
-			<section class="client">
-				<header>
-					<h2>Gestion des clients</h2>
-				</header>
-				<div>
-					Consulter la fiche de :
-					<select class="customer_card" name="">
-						<?php
-						foreach($q as $key => $customer):
-							$customer_lastname = get_metadata("user", $key+1, "last_name", true);
-							$customer_firstname = get_metadata("user", $key+1, "first_name", true);
-							// $customer_name = $customer_lastname === "" ? $customer["user_nicename"] : $customer_lastname + " " + $customer_firstname
-							// $customer_name = $customer_name === false ? $customer["user_nicename"] : $customer_name + get_metadata("user", $key+1, "last_name", true);
-						?>
-							<option value="<?= $customer["user_nicename"] ?>"><?= $customer_lastname ?></option>
-						<?php
-						endforeach;
-
-						?>
-					</select>
-				</div>
+				<table class="widefat striped">
+					<thead>
+						<th>Identifiant</th>
+						<th>Nom</th>
+						<th>Prénom</th>
+						<th>Date de création</th>
+						<th></th>
+					</thead>
+					<tbody>
+						<?php foreach( get_users( ['role__not_in' => ['administrator']] ) as $user ):
+							$Patient = new Patient( $user->ID );
+							?>
+							<tr>
+								<td><?= $Patient->get_login() ?></td>
+								<td><?= $Patient->get_first_name() ?></td>
+								<td><?= $Patient->get_last_name() ?></td>
+								<td><?= $Patient->get_registered_date() ?></td>
+								<td style="width:50px"><a href="<?= admin_url('admin.php?page=dinet_patient_record&patient_id='.$Patient->get_user_id()) ?>"><span class="dashicons dashicons-welcome-write-blog"></span></a></td>
+							</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
 			</section>
 		</main>
 	</body>

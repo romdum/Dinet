@@ -6,7 +6,7 @@
  */
 class ChartController
 {
-	public static function getDataset()
+	public static function getDataset( $user_id = null )
 	{
 		global $wpdb;
 		$labels          = [
@@ -18,7 +18,7 @@ class ChartController
 			"Sucre"    => "rgba(255, 133, 33 , 1)",
 		];
 
-		$q = $wpdb->get_results( ChartController::getQuery(4), ARRAY_A );
+		$q = $wpdb->get_results( ChartController::getQuery( 4, $user_id ), ARRAY_A );
 
 		$dataset = [];
 
@@ -42,13 +42,13 @@ class ChartController
 	}
 
 
-	private static function getQuery( $count = 1 )
+	private static function getQuery( $count = 1, $user_id = null )
 	{
 		global $wpdb;
 		$pre = $wpdb->prefix;
-		$result          = "";
-		$labels          = [ "Energie", "Eau", "Proteine", "Glucide", "Lipide", "Sucre" ];
-		$current_user_id = get_current_user_id();
+		$result = "";
+		$labels = [ "Energie", "Eau", "Proteine", "Glucide", "Lipide", "Sucre" ];
+		$user_id = $user_id === null ? get_current_user_id() : $user_id;
 		$d1 = date('Y-m-d', strtotime('-'. date('w').' days') + (24*60*60));
 		$d2 = date('Y-m-d', strtotime('+'.(6-date('w')).' days') + (24*60*60));
 
@@ -63,7 +63,7 @@ class ChartController
 		      SUM((`Sucres (g/100g)` * fu.quantity /100)) AS {$labels[5]}
 		    FROM " . Dinet::$table_food . " AS f
 		      JOIN " . Dinet::$table_food_users . " AS fu ON f.id = food_id
-		    WHERE user_id = {$current_user_id}
+		    WHERE user_id = {$user_id}
 		    AND fu.eat_date BETWEEN '{$d1}' AND '{$d2}'";
 
 			$d1 = date("Y-m-d",strtotime($d1) - (7*24*60*60));

@@ -115,4 +115,36 @@ class FoodListController
 
 		wp_die();
 	}
+
+    function get_last_eaten_food( $user_id = null, $limit = -1 )
+    {
+        if( $user_id === null ) $user_id = get_current_user_id();
+        $sql = '
+            SELECT *
+            FROM ' . Dinet::$table_food . '
+            JOIN ' . Dinet::$table_food_users . ' ON ' . Dinet::$table_food . '.id = ' . Dinet::$table_food_users . '.food_id
+            WHERE ' . Dinet::$table_food_users . '.user_id = \'' . $user_id . '\'
+            ORDER BY eat_date DESC';
+
+        if( $limit !== -1 )
+        {
+            $sql .= ' LIMIT ' . $limit;
+        }
+
+        return $GLOBALS['wpdb']->get_results( $sql, ARRAY_A );
+    }
+
+    function ajax_remove_eaten_food()
+    {
+        $GLOBALS['wpdb']->delete(
+            Dinet::$table_food_users,
+            ['id' => $_POST['conso_id']]
+        );
+
+        echo json_encode( array(
+			"datasets" => ChartController::getDataset(),
+		) );
+
+        wp_die();
+    }
 }

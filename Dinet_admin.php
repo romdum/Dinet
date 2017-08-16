@@ -9,16 +9,38 @@ class Dinet_admin
         add_action( 'admin_menu', array( $this, 'dinet_add_plugin_menu' ) );
 
         add_action( "admin_post_post_add_food", array( new NewFoodController(), "post_add_food" ) );
+
+        add_action( "admin_post_post_save_patient", array( new PostRequestController(), "post_save_patient" ) );
     }
 
     function dinet_add_plugin_menu()
     {
-        add_menu_page( "Dinet", "Dinet Admin", "administrator", "dinet_admin_plugin", array(
-            $this,
-            "display_dinet_admin",
-        ), "dashicons-carrot", 25 );
-        add_plugins_page( "Dinet", "Dinet", "administrator", "dinet_customer", array( $this, "display_dinet_admin_customer" ) );
-        add_plugins_page( "Dinet", "Dinet", "administrator", "dinet_add_food", array( $this, "display_dinet_admin_add_food" ) );
+        add_submenu_page( 'dinet_plugin', 'Administration', 'Administration', 'administrator', 'dinet_admin_page', array( $this, 'display_dinet_admin' ) );
+        add_submenu_page( 'dinet_plugin', 'Fiche patient', 'Fiche patient', 'administrator', 'dinet_patient_record', array( $this, 'display_dinet_patient_record' ) );
+        add_submenu_page( 'dinet_plugin', 'Ajouter un aliment', 'Ajouter un aliment', 'administrator', 'dinet_add_food', array( $this, 'display_dinet_admin_add_food' ) );
+    }
+
+    function display_dinet_patient_record()
+    {
+        if( ! isset( $_GET['patient_id'] ) )
+        {
+            $this->display_dinet_admin();
+            wp_die();
+        }
+
+        $FoodPagination = new FoodListController();
+        $limit = -1;
+        $Patient = new Patient( $_GET['patient_id'] );
+
+        include 'views/admin/header.php';
+        echo '<div style="display:flex;">';
+        include 'views/admin/patient_record.php';
+        include 'views/admin/patient_consultation.php';
+        echo '</div>';
+        echo '<div style="display:flex;">';
+        include 'views/chart.php';
+        include 'views/last_food.php';
+        echo '</div>';
     }
 
     /**

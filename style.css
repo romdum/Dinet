@@ -1,3 +1,4 @@
+body.dinet_page_dinet_monitoring_page main,
 body.toplevel_page_dinet_admin_plugin main,
 body.toplevel_page_dinet_plugin main {
     display: flex;
@@ -14,7 +15,9 @@ body.toplevel_page_dinet_plugin main {
     font-size: 1rem;
     color: #777;
 }
-
+body.dinet_page_dinet_monitoring_page section,
+body.dinet_page_dinet_admin_page section,
+body.dinet_page_dinet_patient_record section,
 body.toplevel_page_dinet_admin_plugin section,
 body.toplevel_page_dinet_plugin section,
 body.plugins_page_dinet_add_food main.dinet_add_food {
@@ -25,6 +28,9 @@ body.plugins_page_dinet_add_food main.dinet_add_food {
     margin-right: 1rem;
 }
 
+body.dinet_page_dinet_admin_page section header h2,
+body.dinet_page_dinet_patient_record section header h2,
+body.dinet_page_dinet_monitoring_page section header h2,
 body.toplevel_page_dinet_admin_plugin section header h2,
 body.toplevel_page_dinet_plugin section header h2 {
     font-weight: 400;
@@ -64,7 +70,6 @@ body.toplevel_page_dinet_plugin section header h2 {
     transition: 0.3s;
     height: 28px;
     width: 28px;
-    padding-bottom: 1px;
 }
 
 .dinet_add_eaten_food tr.food_item input.add_input:hover {
@@ -93,24 +98,28 @@ body.toplevel_page_dinet_plugin section header h2 {
     border: 1px solid #006291;
 }
 
-body.toplevel_page_dinet_plugin section.add_info{
+.add_info{
     text-align: center;
 }
 
-body.toplevel_page_dinet_plugin section.add_info label{
+.add_info div input{
+    width: calc(100% - 55px);
+}
+
+.add_info label{
     min-width: 50px;
     margin: 1rem 0;
     text-align: left;
     display: inline-block;
 }
 
-body.toplevel_page_dinet_plugin section.add_info .save_info:hover{
+.add_info .save_info:hover{
     color: #fff;
     background: #0073aa;
     border: 1px solid #006291;
 }
 
-body.toplevel_page_dinet_plugin section.add_info .save_info{
+.add_info .save_info{
     color: #0073aa;
     font-size: 13px;
     font-weight: 600;
@@ -132,6 +141,10 @@ body.toplevel_page_dinet_plugin section.add_info .save_info{
     font-size: 20px;
     padding: 10px;
     text-align: center;
+}
+
+.dinet_chart{
+    width: 500px;
 }
 
 .statChart{
@@ -164,12 +177,55 @@ body.toplevel_page_dinet_plugin section.add_info .save_info{
     min-width: 212px;
 }
 
+.dinet_last_food{
+    flex: 1;
+}
+
+.btn-delete{
+    background: rgba(255, 0, 0, 0);
+    border: none;
+    color: red;
+    cursor: pointer;
+}
+
+.patient_list header h2{
+    display: inline-block;
+}
+
+.patient_list header a{
+    display: inline-block;
+    margin-left: 2rem;
+}
+
+.patient_record{
+    margin-bottom: 1rem;
+    width: 550px;
+}
+
+.patient_record_form_group label{
+    width: 100px;
+    display: inline-block;
+}
+
+.patient_record_form_group textarea,
+.patient_record_form_group input{
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    width: 400px;
+}
+
+.patient_consultation{
+    margin-bottom: 1rem;
+    flex: 1;
+}
+
 @media all and (max-width: 544px){
 
     .citation{
         display: none;
     }
 
+    body.dinet_page_dinet_monitoring_page section,
     body.toplevel_page_dinet_plugin section{
         width: 100%;
     }
