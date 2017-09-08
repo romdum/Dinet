@@ -99,6 +99,8 @@ class FoodListController
 		$food_id  = $_POST["food_id"];
 		$quantity = htmlspecialchars( $_POST["quantity"] );
 
+        $ChartController = new ChartController( new Chart );
+
 		$GLOBALS["wpdb"]->insert(
 			Dinet::$table_food_users,
 			array(
@@ -110,7 +112,7 @@ class FoodListController
 		);
 
 		echo json_encode( array(
-			"datasets" => ChartController::getDataset(),
+			"datasets" => $ChartController->getDataset(),
 		) );
 
 		wp_die();
@@ -136,13 +138,17 @@ class FoodListController
 
     function ajax_remove_eaten_food()
     {
+        $Chart = new Chart();
+        $Chart->setTitle( 'Consommation mensuelle' );
+        $ChartController = new ChartController( $Chart );
+
         $GLOBALS['wpdb']->delete(
             Dinet::$table_food_users,
             ['id' => $_POST['conso_id']]
         );
 
         echo json_encode( array(
-			"datasets" => ChartController::getDataset(),
+			"datasets" => $ChartController->getDataset(),
 		) );
 
         wp_die();

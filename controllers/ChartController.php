@@ -6,29 +6,57 @@
  */
 class ChartController
 {
-	public static function getDataset( $user_id = null )
+	private $Chart;
+	private $chartData;
+
+	public function __construct( $Chart )
+	{
+		$this->Chart = $Chart;
+
+		if( $Chart->getDataType() === Chart::FOOD_MONITORING )
+		{
+			$Chart->setXLabels( $this->getXLabelsFoodMonitoring() );
+			$Chart->setValueAttributes( $this->getValuesAttributesFoodMonitoring() );
+		}
+		else if ( $Chart->getDataType() === Chart::WEIGHT_HISTORY )
+		{
+			$Chart->setValueAttributes( $this->getValueAttributeWeightHistory() );
+		}
+	}
+
+	public function getDataset( $user_id = null )
 	{
 		global $wpdb;
-		$labels          = [
-			"Energie"  => "rgba(80 , 227, 28 , 1)",
-			"Eau"      => "rgba(0  , 209, 255, 1)",
-			"Proteine" => "rgba(249, 78 , 186, 1)",
-			"Glucide"  => "rgba(220, 220, 220, 1)",
-			"Lipide"   => "rgba(255, 230, 0  , 1)",
-			"Sucre"    => "rgba(255, 133, 33 , 1)",
-		];
-
-		$q = $wpdb->get_results( ChartController::getQuery( 4, $user_id ), ARRAY_A );
-
 		$dataset = [];
 
-		foreach ( $labels as $label => $color )
+		if( $this->Chart->getDataType() === Chart::FOOD_MONITORING )
+		{
+			$d = $wpdb->get_results( $this->getFoodMonitoringData( 4, $user_id ), ARRAY_A );
+		}
+		else if( $this->Chart->getDataType() === Chart::WEIGHT_HISTORY )
+		{
+			$Patient = new Patient( $user_id );
+			$d = $Patient->get_weight_history();
+		}
+
+		foreach ( $this->Chart->getValueAttributes() as $label => $color )
 		{
 			$data = [];
 
-			foreach ( array_reverse( $q ) as $item )
+			foreach ( array_reverse( $d ) as $item )
 			{
-				array_push( $data, $item[ $label ] === null ? 0 : $item[ $label ] );
+				if( $this->Chart->getDataType() === Chart::WEIGHT_HISTORY )
+				{
+					array_push( $data, $item );
+				}
+				else if( $this->Chart->getDataType() === Chart::FOOD_MONITORING && isset( $item[ $label ] ))
+				{
+					array_push( $data, $item[ $label ] );
+				}
+				else
+				{
+					array_push( $data, 0 );
+				}
 			}
 
 			array_push( $dataset, [
@@ -42,12 +70,11 @@ class ChartController
 	}
 
 
-	private static function getQuery( $count = 1, $user_id = null )
+	private function getFoodMonitoringData( $count = 1, $user_id = null )
 	{
-		global $wpdb;
-		$pre = $wpdb->prefix;
+		$pre = $GLOBAL['wpdb'];
 		$result = "";
-		$labels = [ "Energie", "Eau", "Proteine", "Glucide", "Lipide", "Sucre" ];
+		$labels = array_keys( $this->Chart->getValueAttributes() );
 		$user_id = $user_id === null ? get_current_user_id() : $user_id;
 		$d1 = date('Y-m-d', strtotime('-'. date('w').' days') + (24*60*60));
 		$d2 = date('Y-m-d', strtotime('+'.(6-date('w')).' days') + (24*60*60));
@@ -75,5 +102,34 @@ class ChartController
 		}
 
 		return $result;
+	}
+
+	private function getValuesAttributesFoodMonitoring()
+	{
+		return [
+			"Energie"  => "rgba(80 , 227, 28 , 1)",
+			"Eau"      => "rgba(0  , 209, 255, 1)",
+			"Proteine" => "rgba(249, 78 , 186, 1)",
+			"Glucide"  => "rgba(220, 220, 220, 1)",
+			"Lipide"   => "rgba(255, 230, 0  , 1)",
+			"Sucre"    => "rgba(255, 133, 33 , 1)",
+		];
+	}
+
+	private function getValueAttributeWeightHistory()
+	{
+		return [
+			'Poids' => 'rgba(80 , 227, 28 , 1)'
+		];
+	}
+
+	private function getXLabelsFoodMonitoring()
+	{
+		return [
+			'du '. firstDayOfWeek( new DateTime( date( 'Y-m-d', time() - 60 * 60 * 24 * 21 ) ) ) . ' au ' . lastDayOfWeek( new DateTime( date( 'Y-m-d', time() - 60 * 60 * 24 * 21 ) ) ),
+			'du '. firstDayOfWeek( new DateTime( date( 'Y-m-d', time() - 60 * 60 * 24 * 14 ) ) ) . ' au ' . lastDayOfWeek( new DateTime( date( 'Y-m-d', time() - 60 * 60 * 24 * 14 ) ) ),
+			'du '. firstDayOfWeek( new DateTime( date( 'Y-m-d', time() - 60 * 60 * 24 * 7 ) ) ) . ' au ' . lastDayOfWeek( new DateTime( date( 'Y-m-d', time() - 60 * 60 * 24 * 7 ) ) ),
+			'du '. firstDayOfWeek() . ' au ' . lastDayOfWeek()
+		];
 	}
 }

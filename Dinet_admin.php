@@ -31,6 +31,9 @@ class Dinet_admin
         $FoodPagination = new FoodListController();
         $limit = -1;
         $Patient = new Patient( $_GET['patient_id'] );
+        $Chart = new Chart( Chart::WEIGHT_HISTORY );
+        $Chart->setTitle( 'Evolution du poids' );
+        $ChartController = new ChartController( $Chart );
 
         include 'views/admin/header.php';
         echo '<div style="display:flex;">';

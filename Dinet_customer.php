@@ -6,6 +6,7 @@ require_once "controllers/FoodListController.php";
 require_once "controllers/BMIPatientController.php";
 require_once "models/Food.php";
 require_once "models/Patient.php";
+require_once "models/Chart.php";
 
 class Dinet_customer
 {
@@ -98,6 +99,9 @@ class Dinet_customer
 		include "views/customer/header.php";
 		if( self::$config->display_chart )
 		{
+			$Chart = new Chart();
+			$Chart->setTitle( 'Consommation mensuelle' );
+            $ChartController = new ChartController( $Chart );
             echo '<main>';
 			include "views/chart.php";
 		}
