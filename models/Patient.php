@@ -37,6 +37,11 @@ class Patient
         return $this->weight;
     }
 
+    public function get_weight_history()
+    {
+        return get_metadata( 'user', $this->user_id, 'dinet_poids' );
+    }
+
     public function get_height()
     {
         return $this->height;
