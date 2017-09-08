@@ -14,6 +14,7 @@ require_once "Dinet_install.php";
 require_once "Dinet_admin.php";
 require_once "Dinet_customer.php";
 require_once "Dinet_consultation.php";
+require_once 'utils/utilDate.php';
 
 require_once "controllers/PostRequestController.php";
 
