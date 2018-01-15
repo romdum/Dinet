@@ -18,6 +18,7 @@ require_once 'utils/utilDate.php';
 
 require_once "controllers/PostRequestController.php";
 
+define('WPLANG', 'en');
 define( "PLUGIN_PATH", plugin_dir_url( __FILE__ ) );
 
 class Dinet
@@ -41,6 +42,8 @@ class Dinet
         new Dinet_consultation();
 		new Dinet_customer();
 		new Dinet_admin();
+// var_dump(basename( dirname( __FILE__ ) ) . '/lang');
+		load_plugin_textdomain( 'dinet', false, basename( dirname( __FILE__ ) ) . '/lang'  );
 	}
 }
 
