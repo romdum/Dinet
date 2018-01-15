@@ -6,7 +6,7 @@
         <thead>
             <tr>
                 <th>Date</th>
-                <th>Nom</th>
+                <th><?= __('Nom', 'dinet') ?></th>
                 <th>Quantité (g)</th>
                 <th></th>
             </tr>

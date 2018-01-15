@@ -1,6 +1,8 @@
 <?php
 
-class CitationController
+namespace Dinet\Monitoring;
+
+class Citation
 {
     private $citationList = [
         "Que la nourriture soit ton médicament et que ton médicament soit dans ta nourriture - Hippocrate",

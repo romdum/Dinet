@@ -1,5 +1,9 @@
 <?php
 
+namespace Dinet\Monitoring;
+
+use Dinet\Dinet;
+
 class NewFoodController
 {
 	function __construct()

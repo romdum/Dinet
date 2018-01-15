@@ -1,12 +1,16 @@
 <?php
 
-require_once "controllers/ChartController.php";
-require_once "controllers/CitationController.php";
-require_once "controllers/FoodListController.php";
-require_once "controllers/BMIPatientController.php";
-require_once "models/Food.php";
-require_once "models/Patient.php";
-require_once "models/Chart.php";
+use Dinet\Monitoring\Citation;
+use Dinet\Patient\BMIPatient;
+use Dinet\Patient\Patient;
+
+require_once "monitoring/Citation.php";
+require_once "monitoring/FoodListController.php";
+require_once "patient/BMIPatient.php";
+require_once "monitoring/Food.php";
+require_once "patient/Patient.php";
+require_once "main/Chart.php";
+require_once "monitoring/Chart.php";
 
 class Dinet_customer
 {
@@ -34,31 +38,31 @@ class Dinet_customer
 
 	function load_script()
 	{
-		wp_register_script( "plugin_dinet_script_util", PLUGIN_PATH . "js/util.js", array( "jquery" ) );
+		wp_register_script( "plugin_dinet_script_util", PLUGIN_URL . "ressources/js/util.js", array( "jquery" ) );
 		wp_enqueue_script( "plugin_dinet_script_util" );
 
-		wp_register_script( "plugin_dinet_script_add_eaten_food", PLUGIN_PATH . "js/add_eaten_food.js", array( "jquery" ) );
+		wp_register_script( "plugin_dinet_script_add_eaten_food", PLUGIN_URL . "ressources/js/add_eaten_food.js", array( "jquery" ) );
 		wp_localize_script( "plugin_dinet_script_add_eaten_food", "myAjax", array(
 			"ajaxurl" => admin_url( "admin-ajax.php" ),
 			"nonce"   => wp_create_nonce( "add_eaten_food_nonce" ),
 		) );
 		wp_enqueue_script( "plugin_dinet_script_add_eaten_food" );
 
-		wp_register_script( "plugin_dinet_script_pagination", PLUGIN_PATH . "js/food_pagination.js", array( "jquery" ) );
+		wp_register_script( "plugin_dinet_script_pagination", PLUGIN_URL . "ressources/js/food_pagination.js", array( "jquery" ) );
 		wp_localize_script( "plugin_dinet_script_pagination", "myAjax", array(
 			"ajaxurl" => admin_url( "admin-ajax.php" ),
 			"nonce"   => wp_create_nonce( "pagination_nonce" ),
 		) );
 		wp_enqueue_script( "plugin_dinet_script_pagination" );
 
-		wp_register_script( "plugin_dinet_script_search", PLUGIN_PATH . "js/search.js", array( "jquery" ) );
+		wp_register_script( "plugin_dinet_script_search", PLUGIN_URL . "ressources/js/search.js", array( "jquery" ) );
 		wp_localize_script( "plugin_dinet_script_search", "myAjax", array(
 			"ajaxurl" => admin_url( "admin-ajax.php" ),
 			"nonce"   => wp_create_nonce( "search_nonce" ),
 		) );
 		wp_enqueue_script( "plugin_dinet_script_search" );
 
-		wp_register_script( "plugin_dinet_script_remove_eaten_food", PLUGIN_PATH . "js/remove_eaten_food.js", array( "jquery" ) );
+		wp_register_script( "plugin_dinet_script_remove_eaten_food", PLUGIN_URL . "ressources/js/remove_eaten_food.js", array( "jquery" ) );
 		wp_localize_script( "plugin_dinet_script_remove_eaten_food", "myAjax", array(
 			"ajaxurl" => admin_url( "admin-ajax.php" ),
 			"nonce"   => wp_create_nonce( "search_nonce" ),
@@ -76,7 +80,7 @@ class Dinet_customer
 		remove_submenu_page( 'dinet_plugin', 'dinet_plugin' );
 	}
 
-	function add_admin_menu_item( $wp_admin_bar )
+	function add_admin_menu_item( WP_Admin_Bar $wp_admin_bar )
 	{
 		$wp_admin_bar->add_node( array(
 			'id'    => 'dinet_admin_menu_item',
@@ -90,27 +94,27 @@ class Dinet_customer
 	 */
 	function display_dinet()
 	{
-		$Citation = new CitationController();
+		$Citation = new Citation();
 		$Patient = new Patient();
-		$BMI = new BMIPatientController( $Patient );
+		$BMI = new BMIPatient( $Patient );
 		$FoodPagination = new FoodListController();
         $limit = 5;
 
-		include "views/customer/header.php";
+		include "ressources/views/customer/header.php";
 		if( self::$config->display_chart )
 		{
-			$Chart = new Chart();
+			$Chart = new Dinet\Monitoring\Chart();
 			$Chart->setTitle( 'Consommation mensuelle' );
-            $ChartController = new ChartController( $Chart );
             echo '<main>';
-			include "views/chart.php";
+			$Chart->display();
+
 		}
 		if( self::$config->display_bmi )
 		{
-			include "views/customer/imc.php";
+			include "ressources/views/customer/imc.php";
 		}
-		include "views/customer/form_info.php";
-		include "views/last_food.php";
-		include "views/customer/add_eaten_food.php";
+		include "ressources/views/customer/form_info.php";
+		include "ressources/views/last_food.php";
+		include "ressources/views/customer/add_eaten_food.php";
 	}
 }
