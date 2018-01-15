@@ -1,5 +1,7 @@
 <?php
 
+namespace Dinet\Monitoring;
+
 class Food
 {
     private $id;

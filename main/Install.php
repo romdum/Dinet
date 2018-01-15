@@ -1,22 +1,23 @@
 <?php
 
-require_once "Dinet_create_table.php";
+namespace Dinet;
 
+//require_once "Dinet_create_table.php";
 
-class Dinet_install
+class Install
 {
     /**
      * Plugin installation
      */
-    public function install()
+    public static function install()
     {
         /*
          * Add table: customer, food
          */
-        $tableGenerator = new Dinet_create_table();
-        $tableGenerator->createFoodUsersTable();
-        $tableGenerator->createFoodTable();
-        $tableGenerator->addContentFoodTable();
+        //$tableGenerator = new Dinet_create_table();
+        //$tableGenerator->createFoodUsersTable();
+        //$tableGenerator->createFoodTable();
+        //$tableGenerator->addContentFoodTable();
 
         /*
          * Add parameter dinet in options table to know if the plugin is installed
@@ -30,17 +31,12 @@ class Dinet_install
     /**
      * Function called when the plugin is activate
      */
-    public function activate()
+    public static function activate()
     {
         // Install the plugin if it's not
-        if (!$this->isInstalled())
+        if ( ! self::isInstalled() )
         {
-            $this->install();
-        }
-        // debug mode
-        if ($_SERVER["HTTP_HOST"] === "localhost")
-        {
-            $this->install();
+            self::install();
         }
 
         /*
@@ -59,19 +55,15 @@ class Dinet_install
     /**
      * Function called when the plugin is deactivate
      */
-    public function deactivate()
+    public static function deactivate()
     {
-	    // debug mode
-	    if ($_SERVER["HTTP_HOST"] === "localhost")
-	    {
-		    $this->uninstall();
-	    }
+
     }
 
     /**
      * Uninstall plugin
      */
-    public function uninstall()
+    public static function uninstall()
     {
         /*
          * Drop tables
@@ -91,7 +83,7 @@ class Dinet_install
      * Return true if the plugin is already installed
      * @return boolean
      */
-    public function isInstalled()
+    public static function isInstalled()
     {
 	    return $GLOBALS['wpdb']->get_results( "SELECT option_value FROM {$GLOBALS['wpdb']->prefix}options WHERE option_name = 'dinet'" ) !== null ;
     }

@@ -1,5 +1,7 @@
 <?php
 
+namespace Dinet\Consultation;
+
 class ConsultationController
 {
     function hasConsultation( $patient_id )

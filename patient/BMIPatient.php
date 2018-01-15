@@ -1,6 +1,8 @@
 <?php
 
-class BMIPatientController
+namespace Dinet\Patient;
+
+class BMIPatient
 {
     const ORANGE = "#FFA515", GREEN = "#40B514", RED = "#FF2D2D", FONT_SIZE = "5rem";
     const LOW_BMI = "Maigreur", GOOD_BMI = "Corpulence normale", HIGH_BMI = "Surpoids";
@@ -9,7 +11,7 @@ class BMIPatientController
     private $imc, $imc_color, $imc_font_size, $imc_comment;
     private $Patient;
 
-    public function __construct( $Patient )
+    public function __construct( Patient $Patient )
     {
         $this->Patient = $Patient;
 

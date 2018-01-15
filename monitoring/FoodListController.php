@@ -1,5 +1,8 @@
 <?php
 
+use Dinet\Dinet;
+use Dinet\Monitoring\Food;
+
 class FoodListController
 {
     private $page;

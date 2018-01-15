@@ -1,7 +1,7 @@
 
 <section class="dinet_chart">
     <header>
-        <h2><?= $Chart->getTitle() ?></h2>
+        <h2><?= $this->getTitle() ?></h2>
     </header>
     <canvas id="myChart" class="statChart"></canvas>
 </section>
@@ -11,8 +11,8 @@
     let myChart = new Chart(ctx, {
         type   : 'line',
         data   : {
-            labels : <?= json_encode( $Chart->getXLabels() ); ?>,
-            datasets: <?= json_encode( $ChartController->getDataset( $Patient->get_user_id() ) ) ?>
+            labels : <?= json_encode( $this->getXLabels() ); ?>,
+            datasets: <?= json_encode( $this->getDataset() ); ?>
         }
     });
 </script>

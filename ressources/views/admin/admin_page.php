@@ -14,7 +14,7 @@
 					</thead>
 					<tbody>
 						<?php foreach( get_users( ['role__not_in' => ['administrator']] ) as $user ):
-							$Patient = new Patient( $user->ID );
+							$Patient = new Dinet\Patient\Patient( $user->ID );
 							?>
 							<tr>
 								<td><?= $Patient->get_login() ?></td>
