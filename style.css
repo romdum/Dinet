@@ -65,11 +65,15 @@ body.toplevel_page_dinet_plugin section header h2 {
     border-top-right-radius: 2px;
     border: 1px solid #ccc;
     margin-left: -4px;
-    border-left: 0;
+    /*border-left: 0;*/
     cursor: pointer;
     transition: 0.3s;
     height: 28px;
-    width: 28px;
+    /*width: 28px;*/
+}
+
+#table_food input{
+    height: 28px;
 }
 
 .dinet_add_eaten_food tr.food_item input.add_input:hover {
@@ -217,6 +221,12 @@ body.toplevel_page_dinet_plugin section header h2 {
 .patient_consultation{
     margin-bottom: 1rem;
     flex: 1;
+}
+
+.inputError{
+    color: red !important;
+    border-color: red !important;
+    box-shadow: 0 2px 5px rgba(255, 0, 0, .4) !important;
 }
 
 @media all and (max-width: 544px){

@@ -8,7 +8,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js"></script>
 <script>
     let ctx = document.getElementById("myChart").getContext("2d");
-    let myChart = new Chart(ctx, {
+    <?= isset( $this->chartId ) ? $this->chartId : 'myChart' ?> = new Chart(ctx, {
         type   : 'line',
         data   : {
             labels : <?= json_encode( $this->getXLabels() ); ?>,

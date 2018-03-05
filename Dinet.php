@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Dinet
  * Plugin URI:
- * Description: Plugin permettant de gerer la consommation alimentaire des patients
+ * Description: De la diet' sur le net !
  * Version: 0.0.1
  * Author: Romain DUMINIL, Mathilde PETITPEZ
  * Author URI: duminil.eu
@@ -13,48 +13,89 @@
 namespace Dinet;
 
 use Dinet\Consultation\Consultation;
-use Dinet_customer;
+use Dinet\Monitoring\Monitoring;
+use Dinet\Patient\Patient;
+use Dinet\Patient\PatientCtrl;
 
-
-require_once "main/Install.php";
-require_once "main/UI.php";
-require_once "Dinet_customer.php";
-require_once "consultation/Consultation.php";
-require_once 'main/utils/utilDate.php';
-
-require_once "controllers/PostRequestController.php";
-
-define( "PLUGIN_URL", plugin_dir_url( __FILE__ ) );
-define( "PLUGIN_PATH", plugin_dir_path( __FILE__ ) );
+require_once plugin_dir_path( __FILE__ ) . 'app/main/utils/UtilPath.php';
+require_once UtilPath::getUtilsPath( 'Util' );
+require_once UtilPath::getUtilsPath( 'UtilDate' );
+require_once UtilPath::getUtilsPath( 'UtilWP' );
+require_once UtilPath::getMainPath( 'Installer' );
+require_once UtilPath::getMainPath( 'UI' );
+require_once UtilPath::getMainPath( 'Settings' );
+require_once UtilPath::getMainPath( 'SettingsEnum' );
+require_once UtilPath::getMainPath( 'Citation' );
+require_once UtilPath::getPatientPath( 'Patient' );
+require_once UtilPath::getPatientPath( 'PatientCtrl' );
 
 class Dinet
 {
-    public static $table_food, $table_food_users;
+    const NAME = 'Dinet';
+    const SLUG = 'dinet';
 
-	function __construct()
-	{
-		self::$table_food = $GLOBALS["wpdb"]->prefix . "dinet_food";
-		self::$table_food_users = $GLOBALS["wpdb"]->prefix . "dinet_food_users";
+    /** @var string */
+    public static $TABLE_FOOD, $TABLE_FOOD_USER;
 
-		// install / uninstall
-		register_activation_hook( __FILE__, array( 'Install', 'activate' ) );
-		register_deactivation_hook( __FILE__, array( 'Install', 'deactivate' ) );
-		register_uninstall_hook( __FILE__, array( 'Install', 'uninstall' ) );
+    /** @var Settings */
+    public static $setting;
 
-		add_action( 'init', array( $this, 'loadScript' ), 10, 0 );
+    public function load() : void
+    {
+        $this->loadStaticVar();
+        $this->loadHook();
+        $this->loadLanguage();
 
-        new Consultation();
-		new Dinet_customer();
-		new UI();
+        $mainUI = new UI();
+        $mainUI->load();
 
-		load_plugin_textdomain( 'dinet', false, basename( dirname( __FILE__ ) ) . '/lang'  );
-	}
+        if( self::$setting->getSetting( SettingsEnum::CONSULTATION, SettingsEnum::ACTIVATE ) )
+        {
+            require_once UtilPath::getConsultationPath('Consultation' );
+            $Consultation = new Consultation();
+            $Consultation->load();
+        }
 
-	public function loadScript()
-	{
-		wp_register_style( 'plugin-dinet-style', PLUGIN_URL . 'style.css' );
-		wp_enqueue_style( 'plugin-dinet-style' );
-	}
+        if( self::$setting->getSetting( SettingsEnum::MONITORING, SettingsEnum::ACTIVATE ) )
+        {
+            require_once UtilPath::getMonitoringPath( 'Monitoring' );
+            $Monitoring = new Monitoring();
+            $Monitoring->load();
+        }
+    }
+
+    public function loadScript() : void
+    {
+        wp_register_style( 'plugin-dinet-style', plugin_dir_url( __FILE__ ) . 'style.css' );
+        wp_enqueue_style( 'plugin-dinet-style' );
+    }
+
+    private function loadHook() : void
+    {
+        register_activation_hook( __FILE__, array( '\Dinet\Installer', 'activate' ) );
+        register_deactivation_hook( __FILE__, array( Installer::NAME, 'deactivate' ) );
+        register_uninstall_hook( __FILE__, array( Installer::NAME, 'uninstall' ) );
+
+        add_action( 'init', array( $this, 'loadScript' ), 10, 0 );
+
+        $PatientCtrl = new PatientCtrl();
+        $PatientCtrl->setPatient( new Patient() );
+        add_action( 'wp_ajax_ajaxSavePatient', array( $PatientCtrl, 'ajaxSavePatient' ) );
+    }
+
+    private function loadLanguage() : void
+    {
+        load_plugin_textdomain( 'dinet', false, basename( dirname( __FILE__ ) ) . '/lang'  );
+    }
+
+    private function loadStaticVar() : void
+    {
+        self::$TABLE_FOOD      = $GLOBALS["wpdb"]->prefix . 'dinet_food';
+        self::$TABLE_FOOD_USER = $GLOBALS["wpdb"]->prefix . 'dinet_food_users';
+
+        self::$setting = new Settings();
+    }
 }
 
-new Dinet();
+$Dinet = new Dinet();
+$Dinet->load();
