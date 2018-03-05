@@ -21,8 +21,6 @@ class PatientCtrlTest extends WP_UnitTestCase
     }
 
     /**
-     * Test Patient
-     *
      * @test
      */
     public function withoutPatient()
