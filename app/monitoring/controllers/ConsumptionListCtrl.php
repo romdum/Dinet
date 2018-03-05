@@ -18,6 +18,11 @@ class ConsumptionListCtrl
         $this->consumptionList = new ConsumptionList();
     }
 
+    public function getList( int $nbr = -1 ): array
+    {
+        return array_slice( $this->getConsumptionList()->getList(), 0, $nbr !== -1 ? $nbr : null );
+    }
+
     public function getConsumptionList(): ConsumptionList
     {
         return $this->consumptionList;

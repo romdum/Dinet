@@ -36,7 +36,7 @@
             </tr>
         </thead>
         <tbody class="dinet_last_food_table_body">
-            <?php foreach ( $ConsumptionList->getConsumptionList()->getList() as $consumption ): ?>
+            <?php foreach ( $ConsumptionList->getList(5 ) as $consumption ): ?>
                 <?php include \Dinet\UtilPath::getViewsPath( 'monitoring/lastFoodRow' ); ?>
             <?php endforeach; ?>
         </tbody>
