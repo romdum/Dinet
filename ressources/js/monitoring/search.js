@@ -47,3 +47,16 @@ jQuery(document).ready(function ($)
         }
     });
 });
+
+let Search = (function(){
+    let $searchBar = $('#search_bar');
+
+    let eraseSearch = function(){
+        $searchBar.val('');
+        $searchBar.keyup();
+    };
+
+    return {
+        eraseSearch : eraseSearch
+    }
+})();
