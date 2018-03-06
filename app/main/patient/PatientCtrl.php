@@ -2,6 +2,7 @@
 
 namespace Dinet\Patient;
 
+use Dinet\UtilDate;
 use Dinet\UtilPath;
 
 require_once UtilPath::getPatientPath( 'PatientSaver' );
@@ -102,6 +103,23 @@ class PatientCtrl
             $result = array_slice( $result, 0, $length );
         }
 
+        return $this->arrayUniqueWeightHistory( $result );
+    }
+
+    private function arrayUniqueWeightHistory( array $weightHistory )
+    {
+        $result = $weightHistory;
+        for( $i = 0; $i < count( $weightHistory ); $i++ )
+        {
+            for( $j = $i+1; $j < count( $weightHistory ); $j++ )
+            {
+                if( date( UtilDate::DATE_FORMAT_FR, $weightHistory[$i]['meta_key'] ) ===
+                    date( UtilDate::DATE_FORMAT_FR, $weightHistory[$j]['meta_key'] ) )
+                {
+                    unset($result[$j]);
+                }
+            }
+        }
         return $result;
     }
 }
