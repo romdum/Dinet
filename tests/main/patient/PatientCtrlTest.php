@@ -64,16 +64,16 @@ class PatientCtrlTest extends WP_UnitTestCase
         $Patient = new Patient( $userId );
         $this->PatientCtrl->setPatient( $Patient );
 
-        update_user_meta( $Patient->getUserId(), 'dinetWeight_1518378285', 55 );
-        update_user_meta( $Patient->getUserId(), 'dinetWeight_1518378286', 56 );
+        update_user_meta( $Patient->getUserId(), 'dinetWeight_1511378285', 55 );
+        update_user_meta( $Patient->getUserId(), 'dinetWeight_1518178286', 56 );
         update_user_meta( $Patient->getUserId(), 'dinetWeight_1518378287', 57 );
 
         $metaKey = 'meta_key';
         $metaValue = 'meta_value';
         $this->assertEquals( [
             [$metaKey => '1518378287', $metaValue => '57'],
-            [$metaKey => '1518378286', $metaValue => '56'],
-            [$metaKey => '1518378285', $metaValue => '55']
+            [$metaKey => '1518178286', $metaValue => '56'],
+            [$metaKey => '1511378285', $metaValue => '55'],
         ], $this->PatientCtrl->getWeightHistory() );
     }
 
