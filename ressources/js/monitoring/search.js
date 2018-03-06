@@ -38,7 +38,12 @@ let Search = (function(){
      */
     let eraseSearchBar = function(){
         $searchBar.val('');
-        $searchBar.search();
+        search();
+    };
+
+    let isEmpty = function(){
+        refreshSearchBarVar();
+        return $searchBar.val() === '';
     };
 
     /**
@@ -103,6 +108,7 @@ let Search = (function(){
     return {
         $searchBar     : $searchBar,
         search         : search,
+        isEmpty        : isEmpty,
         eraseSearchBar : eraseSearchBar
     }
 })();
