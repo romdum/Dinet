@@ -7,7 +7,7 @@ jQuery(document).ready(function ($)
         if (quantity > 0 && !isNaN(quantity))
         {
             ajax_add_eaten_food(food_id, quantity);
-            Search.eraseSearch();
+            Search.eraseSearchBar();
         }
         else
         {
