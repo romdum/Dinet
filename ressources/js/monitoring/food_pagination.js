@@ -51,3 +51,21 @@ function pagination(nbArticle)
         });
     }
 }
+
+let Pagination = (function(){
+    let $buttons = jQuery(".pagination_button");
+
+    let hideButtons = function(){
+        $buttons.css("display", "none");
+    };
+
+    let showButtons = function(){
+        $buttons.removeAttr("style");
+    };
+
+    return {
+        $buttons : $buttons,
+        hideButtons : hideButtons,
+        showButtons : showButtons
+    };
+})();
