@@ -36,7 +36,7 @@ class SettingsTest extends WP_UnitTestCase
 	}
 
 	/**
-	 * Test if the JSON setting format is correct
+	 * Test if the JSON setting format is correct.
 	 *
 	 * @after
 	 * @coversNothing
