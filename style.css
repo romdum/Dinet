@@ -241,7 +241,7 @@ body.toplevel_page_dinet_plugin section header h2 {
 
 
 /* Responsive table ajout de consommation */
-@media all and (max-width: 544px) {
+@media all and (max-width: 782px) {
 
     .table_food,
     .table_food thead,
@@ -273,6 +273,8 @@ body.toplevel_page_dinet_plugin section header h2 {
 
     .table_food .quantity{
         display: block;
+        padding-top: 0;
+        padding-bottom: 0;
     }
 
     .table_food input,.table_food select{
@@ -289,11 +291,6 @@ body.toplevel_page_dinet_plugin section header h2 {
     body.dinet_page_dinet_monitoring_page section,
     body.toplevel_page_dinet_plugin section{
         width: 100%;
-    }
-
-    .dinet_add_eaten_food th:nth-child(2),
-    .food_item td:nth-child(2){
-        display: none;
     }
 
 }

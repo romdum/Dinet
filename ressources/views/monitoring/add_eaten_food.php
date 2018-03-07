@@ -35,7 +35,7 @@
                 <td class="food_description"><?= $Food->getDesignation() ?></td>
                 <td><?= $Food->getGroup() ?></td>
                 <td>
-                    <input type="number" class="quantity"/>
+                    <input type="number" class="quantity" placeholder="Quantité (g)"/>
                 </td>
                 <td style="display: flex">
                     <input type="date" name="eat_date" value="<?= date( 'Y-m-d') ?>"/>
