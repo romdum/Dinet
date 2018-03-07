@@ -57,7 +57,7 @@ class FoodMonitoringChart extends Chart
 		{
             $d1 = date(UtilDate::TIME_FORMAT_EN, $dates[$i][0] );
             $d2 = date(UtilDate::TIME_FORMAT_EN, $dates[$i][1] + UtilDate::ONE_DAY );
-
+// TODO: use ConsumptionListCtrl data
 			$result .= "
                 SELECT
 			      SUM((`energy` * fu.quantity /100)) AS {$labels[0]},
