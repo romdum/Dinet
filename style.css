@@ -239,6 +239,47 @@ body.toplevel_page_dinet_plugin section header h2 {
     border: none !important;
 }
 
+
+/* Responsive table ajout de consommation */
+@media all and (max-width: 544px) {
+
+    .table_food,
+    .table_food thead,
+    .table_food tbody,
+    .table_food th,
+    .table_food td,
+    .table_food tr {
+        display: block;
+    }
+
+    .table_food thead {
+        display: none;
+    }
+
+    .table_food tr.food_item {
+        border: 1px solid #ccc;
+        width: 100%;
+    }
+
+    .table_food td {
+        border: none;
+    }
+
+    .table_food .food_description{
+        font-size: 1.5rem;
+        font-weight: bold;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .table_food .quantity{
+        display: block;
+    }
+
+    .table_food input,.table_food select{
+        width: 100% !important;
+    }
+}
+
 @media all and (max-width: 544px){
 
     .citation{
