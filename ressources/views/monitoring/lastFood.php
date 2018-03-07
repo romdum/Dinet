@@ -11,8 +11,9 @@
     <header>
         <h2>Dernières consommations</h2>
     </header>
-    <table class="dinet_last_food_table widefat striped" id="table_last_food">
-        <thead>
+    <div class="table_last_eaten_food_overflow">
+        <table class="dinet_last_food_table widefat striped" id="table_last_food">
+            <thead>
             <tr>
                 <th>Date</th>
                 <th><?= __('Nom') ?></th>
@@ -34,11 +35,12 @@
                     <th></th>
                 <?php endif; ?>
             </tr>
-        </thead>
-        <tbody class="dinet_last_food_table_body">
-            <?php foreach ( $ConsumptionList->getList(5 ) as $consumption ): ?>
+            </thead>
+            <tbody class="dinet_last_food_table_body">
+            <?php foreach ( $ConsumptionList->getConsumptionList()->getList() as $consumption ): ?>
                 <?php include \Dinet\UtilPath::getViewsPath( 'monitoring/lastFoodRow' ); ?>
             <?php endforeach; ?>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 </section>

@@ -18,11 +18,6 @@ class ConsumptionListCtrl
         $this->consumptionList = new ConsumptionList();
     }
 
-    public function getList( int $nbr = -1 ): array
-    {
-        return array_slice( $this->getConsumptionList()->getList(), 0, $nbr !== -1 ? $nbr : null );
-    }
-
     public function getConsumptionList(): ConsumptionList
     {
         return $this->consumptionList;
@@ -39,7 +34,9 @@ class ConsumptionListCtrl
             FROM {$food}
             JOIN {$foodUser} ON {$food}.id = {$foodUser}.food_id
             WHERE {$foodUser}.user_id = '{$userId}'
-            ORDER BY eat_date DESC";
+            AND eat_date > DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH)
+            ORDER BY eat_date DESC
+        ";
 
         $q = $GLOBALS['wpdb']->get_results( $sql, ARRAY_A );
 

@@ -229,6 +229,16 @@ body.toplevel_page_dinet_plugin section header h2 {
     box-shadow: 0 2px 5px rgba(255, 0, 0, .4) !important;
 }
 
+.table_last_eaten_food_overflow{
+    border: 1px solid #eee;
+    max-height: calc(36px * 7);
+    overflow-y: scroll;
+}
+
+.dinet_last_food_table{
+    border: none !important;
+}
+
 @media all and (max-width: 544px){
 
     .citation{
