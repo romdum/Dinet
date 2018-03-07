@@ -11,7 +11,7 @@
         <h2>J'ai mangé ...</h2>
     </header>
     <input type="text" placeholder="Rechercher..." id="search_bar" class="search_bar">
-    <table class="widefat striped" id="table_food" data-page="0">
+    <table class="widefat striped table_food" id="table_food" data-page="0">
         <thead>
         <tr>
             <th>Nom</th>
@@ -32,10 +32,10 @@
 
 		<?php foreach ( $FoodPagination->getFoodList()->getList() as $Food ): ?>
             <tr class="food_item">
-                <td><?= $Food->getDesignation() ?></td>
+                <td class="food_description"><?= $Food->getDesignation() ?></td>
                 <td><?= $Food->getGroup() ?></td>
                 <td>
-                    <input type="number" class="quantity"/>
+                    <input type="number" class="quantity" placeholder="Quantité (g)"/>
                 </td>
                 <td style="display: flex">
                     <input type="date" name="eat_date" value="<?= date( 'Y-m-d') ?>"/>
