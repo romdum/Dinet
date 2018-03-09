@@ -19,11 +19,13 @@ class UI
 
     public function loadScript()
 	{
+	    global $wpdb;
 	    $dep = ['jquery'];
 
         UtilWP::loadJS( self::TABLE_EATEN_FOOD, UtilPath::getJSPath( 'monitoring/TableEatenFood' ), $dep );
         UtilWP::loadJS( self::TABLE_FOOD, UtilPath::getJSPath( 'monitoring/TableFood' ), $dep, [
-            'noncePagination' => wp_create_nonce( 'noncePagination' )
+            'noncePagination' => wp_create_nonce( 'noncePagination' ),
+            'foodNbr' => $wpdb->get_var('SELECT COUNT(1) FROM ' . Dinet::$TABLE_FOOD )
         ]);
         UtilWP::loadJS( self::CONSUMPTION, UtilPath::getJSPath( 'monitoring/Consumption' ), $dep, [
             'nonceRemoveCons' => wp_create_nonce( 'nonceRemoveCons' ),

@@ -5,8 +5,13 @@ jQuery(document).ready(function ($)
         Consumption.add(foodId);
     });
 
+    let $searchBar = Search.getSearchBar();
+    let searchBarValue = $searchBar.val();
     $('#search_bar').on('change paste keyup',function(){
-        Search.search();
+        if(searchBarValue !== $searchBar.val()){
+            Search.search();
+            searchBarValue = $searchBar.val();
+        }
     });
 
     $('#table_last_food').on('click','button[name=delete-food]', function() {
@@ -22,5 +27,4 @@ jQuery(document).ready(function ($)
         TableFood.changePage(TableFood.getPage() - 10)
     });
 });
-
 

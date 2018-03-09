@@ -72,8 +72,7 @@ let TableFood = (function()
 
     let changePage = function(page)
     {
-        // TODO: change this please
-        if (page >= 0 && page < 398){
+        if (page >= 0 && page < utilTableFood.foodNbr){
             getPageData(page)
                 .success(function(response){
                     reloadTable(response,page);
