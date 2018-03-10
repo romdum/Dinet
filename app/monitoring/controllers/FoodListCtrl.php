@@ -63,7 +63,7 @@ class FoodListCtrl
 	 */
 	public function pagination_food()
 	{
-	    check_ajax_referer( UtilWP::getNonceName( UI::FOOD_PAGINATION_SLUG ), 'nonce' );
+	    check_ajax_referer( 'noncePagination', 'nonce' );
 
 		$this->page = $_POST["page"];
         $this->foodList = new FoodList();

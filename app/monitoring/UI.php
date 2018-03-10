@@ -11,20 +11,28 @@ use Dinet\UtilWP;
 
 class UI
 {
-    const ADD_EATEN_FOOD_SLUG  = 'addEatenFood';
-    const FOOD_PAGINATION_SLUG = 'foodPagination';
+    const MAIN_JS              = 'monitoringMainJS';
     const FOOD_SEARCH_SLUG     = 'foodSearch';
-    const REMOVE_CONSUMPTION   = 'removeCons';
-
+    const TABLE_EATEN_FOOD     = 'tableEatenFood';
+    const TABLE_FOOD           = 'tableFood';
+    const CONSUMPTION          = 'consumption';
 
     public function loadScript()
 	{
+	    global $wpdb;
 	    $dep = ['jquery'];
 
-	    UtilWP::loadJS( self::ADD_EATEN_FOOD_SLUG, UtilPath::getJSPath( 'monitoring/add_eaten_food'), $dep );
-        UtilWP::loadJS( self::FOOD_PAGINATION_SLUG, UtilPath::getJSPath( 'monitoring/food_pagination' ), $dep );
-        UtilWP::loadJS( self::FOOD_SEARCH_SLUG, UtilPath::getJSPath( 'monitoring/search' ), $dep );
-        UtilWP::loadJS( self::REMOVE_CONSUMPTION, UtilPath::getJSPath( 'monitoring/remove_eaten_food' ), $dep );
+        UtilWP::loadJS( self::TABLE_EATEN_FOOD, UtilPath::getJSPath( 'monitoring/TableEatenFood' ), $dep );
+        UtilWP::loadJS( self::TABLE_FOOD, UtilPath::getJSPath( 'monitoring/TableFood' ), $dep, [
+            'noncePagination' => wp_create_nonce( 'noncePagination' ),
+            'foodNbr' => $wpdb->get_var('SELECT COUNT(1) FROM ' . Dinet::$TABLE_FOOD )
+        ]);
+        UtilWP::loadJS( self::CONSUMPTION, UtilPath::getJSPath( 'monitoring/Consumption' ), $dep, [
+            'nonceRemoveCons' => wp_create_nonce( 'nonceRemoveCons' ),
+            'nonceAddCons' => wp_create_nonce( 'nonceAddCons' )
+        ]);
+        UtilWP::loadJS( self::FOOD_SEARCH_SLUG, UtilPath::getJSPath( 'monitoring/Search' ), $dep );
+	    UtilWP::loadJS( self::MAIN_JS, UtilPath::getJSPath( 'monitoring/monitoring'), $dep );
 	}
 
 	function dinet_add_plugin_menu()

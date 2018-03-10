@@ -44,7 +44,7 @@ class ConsumptionCtrl
 
     public function saveWithAjax()
     {
-        check_ajax_referer( UtilWP::getNonceName( UI::ADD_EATEN_FOOD_SLUG ), 'nonce' );
+        check_ajax_referer( 'nonceAddCons', 'nonce' );
 
         $response = [];
         $this->Consumption = new Consumption();
@@ -98,7 +98,7 @@ class ConsumptionCtrl
 
     public function deleteWithAjax()
     {
-        check_ajax_referer( UtilWP::getNonceName( UI::REMOVE_CONSUMPTION ), 'nonce' );
+        check_ajax_referer( 'nonceRemoveCons', 'nonce' );
 
         $response = [];
 
