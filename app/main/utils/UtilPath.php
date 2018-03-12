@@ -92,4 +92,9 @@ class UtilPath
     {
         return self::buildPath( '../../../', $file, $ext, $type );
     }
+
+    public static function getGoalPath( string $file = '', string $ext = 'php', string $type = self::TYPE_PATH )
+    {
+        return self::buildPath( '../../goal/', $file, $ext, $type );
+    }
 }

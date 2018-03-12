@@ -223,6 +223,19 @@ body.toplevel_page_dinet_plugin section header h2 {
     flex: 1;
 }
 
+.goal{
+    margin-bottom: 1rem;
+}
+
+.goal input[type="text"]{
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.goal input[type="button"]{
+    height:35px;
+}
+
 .inputError{
     color: red !important;
     border-color: red !important;

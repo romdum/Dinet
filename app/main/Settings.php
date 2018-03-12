@@ -101,15 +101,18 @@ class Settings
         if( get_option( Settings::NAME, null ) === null )
         {
             $defaultSettings = [
-                'Monitoring' => [
-                    'activate' => true,
-                    'display'  => [
-                        'chart' => true,
-                        'bmi'   => true
+                SettingsEnum::MONITORING => [
+                    SettingsEnum::ACTIVATE => true,
+                    SettingsEnum::DISPLAY => [
+                        SettingsEnum::CHART => true,
+                        SettingsEnum::BMI   => true
                     ]
                 ],
-                'Consultation' => [
-                    'activate' => true
+                SettingsEnum::CONSULTATION => [
+                    SettingsEnum::ACTIVATE => true
+                ],
+                SettingsEnum::GOAL => [
+                    SettingsEnum::ACTIVATE => true
                 ]
             ];
 

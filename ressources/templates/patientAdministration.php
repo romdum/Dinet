@@ -1,6 +1,7 @@
 <?php
 /**
  * @var \Dinet\Monitoring\FoodMonitoringChart $Chart
+ * @var \Dinet\Goal\UI $goalUI
  */
 
 use Dinet\Dinet;
@@ -14,7 +15,11 @@ use Dinet\UtilPath;
     <div style="display:flex;">
         <?php include UtilPath::getViewsPath( 'patient_record' ); ?>
 
-        <?php if( Dinet::$setting->getSetting( 'Consultation', 'activate' ) ): ?>
+        <?php if( Dinet::$setting->getSetting( SettingsEnum::GOAL, SettingsEnum::ACTIVATE ) ): ?>
+            <?php $goalUI->displayGoals(); ?>
+        <?php endif; ?>
+
+        <?php if( Dinet::$setting->getSetting( SettingsEnum::CONSULTATION, SettingsEnum::ACTIVATE ) ): ?>
             <?php include UtilPath::getViewsPath( 'admin/patient_consultation' ); ?>
         <?php endif; ?>
     </div>

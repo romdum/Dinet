@@ -16,6 +16,7 @@ use Dinet\Consultation\Consultation;
 use Dinet\Monitoring\Monitoring;
 use Dinet\Patient\Patient;
 use Dinet\Patient\PatientCtrl;
+use Goal;
 
 require_once plugin_dir_path( __FILE__ ) . 'app/main/utils/UtilPath.php';
 require_once UtilPath::getUtilsPath( 'Util' );
