@@ -2,6 +2,7 @@
 
 namespace Dinet;
 
+use Dinet\Goal\UI as GoalUI;
 use Dinet\Monitoring\Citation;
 use Dinet\Monitoring\ConsumptionListCtrl;
 use Dinet\Monitoring\UI as MonitoringUI;
@@ -93,6 +94,12 @@ class UI
 			$ConsumptionList->setPatient( $PatientCtrl->getPatient() );
 			$ConsumptionList->fillList();
 		}
+
+        if( Dinet::$setting->getSetting( SettingsEnum::GOAL, SettingsEnum::ACTIVATE ) )
+        {
+            require_once UtilPath::getGoalPath( 'UI' );
+            $goalUI = new GoalUI();
+        }
 
         $display = [
             'trash' => false

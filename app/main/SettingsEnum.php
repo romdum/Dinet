@@ -7,6 +7,7 @@ class SettingsEnum
     // Module const
     const MONITORING   = 'Monitoring';
     const CONSULTATION = 'Consultation';
+    const GOAL = 'Goal';
 
     // Global const
     const ACTIVATE = 'activate';
@@ -15,4 +16,7 @@ class SettingsEnum
 
     // Monitoring const
     const BMI = 'bmi';
+
+    // Goal const
+
 }
