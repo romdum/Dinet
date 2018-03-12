@@ -8,6 +8,8 @@ require_once plugin_dir_path( __FILE__ ) . '../Settings.php';
 
 class PatientSettings extends Settings
 {
+    const NAME = 'dinet_user_settings_';
+
     private $userId;
 
     public function __construct( $userId = null )
@@ -24,7 +26,7 @@ class PatientSettings extends Settings
      */
     public function createDefaultOption()
     {
-        if( $this->toString() === '' )
+        if( get_option( $this->getOptionName(), null ) === null )
         {
             $defaultSettings = [
                 'Monitoring' => [
@@ -42,24 +44,10 @@ class PatientSettings extends Settings
 
     /**
      * @override
+     * @return string
      */
-    protected function toString()
+    protected function getOptionName()
     {
-        $str = get_user_meta( $this->userId, self::NAME, true );
-        return $str === false ? '' : $str;
-    }
-
-    /**
-     * @param $value
-     * @override
-     */
-    protected function save( $value )
-    {
-        $update = update_user_meta( $this->userId, self::NAME, json_encode( $value ) );
-
-        if( $update )
-        {
-            $this->settings = json_decode( json_encode( $value ) );
-        }
+        return self::NAME . $this->userId;
     }
 }
