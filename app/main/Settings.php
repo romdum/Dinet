@@ -8,7 +8,7 @@ namespace Dinet;
 class Settings
 {
     /**
-     * Settings like they're saved in database (JSON string).
+     * Settings like they're saved in database (serialized string).
      * @var string
      */
     protected $settings;
@@ -23,9 +23,9 @@ class Settings
      */
     public function __construct()
     {
-        $this->settings = json_decode( $this->toString() );
+        $this->settings = get_option( $this->getOptionName(), null );
 
-        if( empty( $this->settings ) )
+        if( ! isset( $this->settings ) )
         {
             $this->createDefaultOption();
         }
@@ -41,9 +41,7 @@ class Settings
      */
     public function getSetting( ...$names )
     {
-        $tmpSettings = Util::object_to_array( $this->settings );
-
-        $result = $tmpSettings;
+        $result = $this->settings;
         for( $i = 0; $i < count( $names ); $i++ )
         {
             if( is_string( $names[$i] ) && isset( $result[$names[$i]] ) )
@@ -72,7 +70,7 @@ class Settings
             return;
         }
 
-        $settings = Util::object_to_array( json_decode( $this->toString() ) );
+        $settings = $this->settings;
 
         $cmdToExe = '$settings';
         for( $i = 0; $i < count( $names ); $i++ )
@@ -98,7 +96,7 @@ class Settings
      */
     public function createDefaultOption()
     {
-        if( get_option( Settings::NAME, null ) === null )
+        if( get_option( $this->getOptionName(), null ) === null )
         {
             $defaultSettings = [
                 SettingsEnum::MONITORING => [
@@ -120,16 +118,16 @@ class Settings
         }
     }
 
-    protected function toString()
-    {
-        return get_option( self::NAME );
-    }
-
     protected function save( $value )
     {
-        if( update_option( self::NAME, json_encode( $value ) ) )
+        if( update_option( $this->getOptionName(), $value ) )
         {
-            $this->settings = json_decode( json_encode( $value ) );
+            $this->settings = $value;
         }
+    }
+
+    protected function getOptionName()
+    {
+        return self::NAME;
     }
 }
