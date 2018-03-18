@@ -8,10 +8,13 @@ use Dinet\Monitoring\ConsumptionListCtrl;
 use Dinet\Monitoring\UI as MonitoringUI;
 use Dinet\Monitoring\NewFoodController;
 use Dinet\Patient\PatientCtrl;
+use Dinet\Patient\PatientSettings;
+use Dinet\Patient\PatientSettingsUI;
 use Dinet\Patient\WeightHistoryChart;
 use Dinet\Patient\Patient;
 
 require_once UtilPath::getPatientPath('WeightHistoryChart');
+require_once UtilPath::getPatientPath('PatientSettingsUI');
 
 class UI
 {
@@ -21,7 +24,6 @@ class UI
 	public function load()
 	{
 		add_action( 'admin_menu', array( $this, 'addPluginMenu' ), 10, 0 );
-
 		add_action( 'init', array( $this, 'loadScript' ), 10, 0 );
 	}
 
@@ -29,10 +31,10 @@ class UI
 	{
 	    if( is_admin() )
         {
-            wp_register_script( "plugin_dinet_script_util", UtilPath::getJSPath('util' ), array( "jquery" ) );
+            wp_register_script( "plugin_dinet_script_util", UtilPath::getJSPath('util.min' ), array( "jquery" ) );
             wp_enqueue_script( "plugin_dinet_script_util" );
 
-            wp_register_script( self::JS_SAVE_PATIENT_SLUG, UtilPath::getJSPath( 'savePatient' ), array( "jquery" ) );
+            wp_register_script( self::JS_SAVE_PATIENT_SLUG, UtilPath::getJSPath( 'savePatient.min' ), array( "jquery" ) );
             wp_localize_script( self::JS_SAVE_PATIENT_SLUG, "SavePatientRecordUtil", array(
                 "ajaxurl" => admin_url( "admin-ajax.php" ),
                 "nonce"   => wp_create_nonce( self::JS_SAVE_PATIENT_NONCE ),
@@ -54,7 +56,7 @@ class UI
 
 		add_submenu_page( 'dinet_plugin', 'Administration', 'Administration', 'administrator', 'dinet_admin_page', array( $this, 'displayAdmin' ) );
 		add_submenu_page( 'dinet_plugin', 'Fiche patient', 'Fiche patient', 'administrator', 'dinet_patient_record', array( $this, 'displayPatientAdministration' ) );
-		add_submenu_page( null, 'Paramètres du patient', 'Paramètres du patient', 'administrator', 'dinet_patient_settings', array( $this, 'displayPatientSettings' ) );
+//		add_submenu_page( 'dinet_user_settings', 'Paramètres du patient', 'Paramètres du patient', 'administrator', 'dinet_patient_settings', array( new PatientSettingsUI(), 'createSettingsPage' ) );
 
 //		remove_submenu_page( 'dinet_plugin', 'dinet_patient_settings' );
 		remove_submenu_page( 'dinet_plugin', 'dinet_plugin' );
@@ -107,13 +109,4 @@ class UI
 
         include UtilPath::getTemplatesPath( 'patientAdministration' );
 	}
-
-	public function displayPatientSettings()
-    {
-        $PatientCtrl = new PatientCtrl();
-        $PatientCtrl->setPatient( new Patient( $_GET['patient_id'] ) );
-        $PatientCtrl->load();
-
-        include UtilPath::getTemplatesPath( 'patientSettings' );
-    }
 }

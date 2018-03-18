@@ -18,7 +18,7 @@ class UI
 
     public function loadJS()
     {
-        UtilWP::loadJS( 'goal', UtilPath::getJSPath( 'goal' ), ['jquery'] );
+        UtilWP::loadJS( 'goal', UtilPath::getJSPath( 'goal.min' ), ['jquery'] );
     }
 
     public function displayGoals( $userId = null )
