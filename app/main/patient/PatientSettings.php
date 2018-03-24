@@ -46,7 +46,7 @@ class PatientSettings extends Settings
      * @override
      * @return string
      */
-    protected function getOptionName()
+    public function getOptionName()
     {
         return self::NAME . $this->userId;
     }

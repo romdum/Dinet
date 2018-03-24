@@ -122,4 +122,9 @@ class PatientCtrl
         }
         return $result;
     }
+
+    public function getSettings(): PatientSettings
+    {
+        return $this->settings;
+    }
 }
