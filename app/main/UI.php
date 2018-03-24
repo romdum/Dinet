@@ -56,7 +56,7 @@ class UI
 
 		add_submenu_page( 'dinet_plugin', 'Administration', 'Administration', 'administrator', 'dinet_admin_page', array( $this, 'displayAdmin' ) );
 		add_submenu_page( 'dinet_plugin', 'Fiche patient', 'Fiche patient', 'administrator', 'dinet_patient_record', array( $this, 'displayPatientAdministration' ) );
-//		add_submenu_page( 'dinet_user_settings', 'Paramètres du patient', 'Paramètres du patient', 'administrator', 'dinet_patient_settings', array( new PatientSettingsUI(), 'createSettingsPage' ) );
+		add_submenu_page( 'dinet_user_settings', 'Paramètres du patient', 'Paramètres du patient', 'administrator', 'dinet_patient_settings', array( new PatientSettingsUI(), 'createSettingsPage' ) );
 
 //		remove_submenu_page( 'dinet_plugin', 'dinet_patient_settings' );
 		remove_submenu_page( 'dinet_plugin', 'dinet_plugin' );
