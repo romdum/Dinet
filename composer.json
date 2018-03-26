@@ -1,0 +1,19 @@
+{
+  "name": "dinet",
+  "description": "WordPress Plugin Dinet",
+  "keywords": ["wordpress", "plugin", "dinet"],
+  "homepage": "https://github.com/romdum/Dinet",
+  "license": "GNU",
+  "authors": [
+    {
+      "name": "Romain Duminil",
+      "email": "romain@duminil.eu",
+      "homepage": "http://duminil.eu"
+    }
+  ],
+  "type": "wordpress-plugin",
+  "require": {
+    "php": ">=7.1",
+    "composer/installers": "v1.0.6"
+  }
+}
