@@ -31,7 +31,7 @@ require_once UtilPath::getPatientPath( 'Patient' );
 require_once UtilPath::getPatientPath( 'PatientCtrl' );
 
 class Dinet
-{
+{ 
     const NAME = 'Dinet';
     const SLUG = 'dinet';
 
