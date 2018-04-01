@@ -30,8 +30,8 @@ require_once UtilPath::getMainPath( 'Citation' );
 require_once UtilPath::getPatientPath( 'Patient' );
 require_once UtilPath::getPatientPath( 'PatientCtrl' );
 
-class Dinet
-{ 
+class Dinet 
+{
     const NAME = 'Dinet';
     const SLUG = 'dinet';
 
