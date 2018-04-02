@@ -63,6 +63,12 @@ class Dinet
             $Monitoring = new Monitoring();
             $Monitoring->load();
         }
+
+        if( self::$setting->getSetting( SettingsEnum::GOAL, SettingsEnum::ACTIVATE ) )
+        {
+            require_once UtilPath::getGoalPath( 'UI' );
+            $Goal = new \Dinet\Goal\UI();
+        }
     }
 
     public function loadScript() : void

@@ -16,7 +16,7 @@ use Dinet\UtilPath;
         <?php include UtilPath::getViewsPath( 'patient_record' ); ?>
 
         <?php if( Dinet::$setting->getSetting( SettingsEnum::GOAL, SettingsEnum::ACTIVATE ) ): ?>
-            <?php $goalUI->displayGoals(); ?>
+            <?php $goalUI->displayGoals( $_GET['patient_id'] ); ?>
         <?php endif; ?>
 
         <?php if( Dinet::$setting->getSetting( SettingsEnum::CONSULTATION, SettingsEnum::ACTIVATE ) ): ?>

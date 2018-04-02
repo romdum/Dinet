@@ -2,6 +2,8 @@
 
 namespace Dinet\Goal;
 
+use TypeError;
+
 class GoalCtrl
 {
     /** @var Goal */
@@ -14,11 +16,12 @@ class GoalCtrl
      * @return array
      * @throws TypeError
      */
-    public function getAll( int $userId )
+    public function getAll()
     {
         global $wpdb;
         $queryGoals = $wpdb->get_results( $wpdb->prepare(
-            "SELECT * FROM {$wpdb->usermeta} WHERE meta_key = 'dinet_goal' AND user_id = '%d'", $userId ), ARRAY_A );
+            "SELECT * FROM {$wpdb->usermeta} WHERE meta_key = 'dinet_goal' AND user_id = '%d'", $this->goal->getUserId() ),
+        ARRAY_A );
 
         return array_map( function($val){
             return [
@@ -33,11 +36,11 @@ class GoalCtrl
     private function setGoalFromArray( array $data )
     {
         $this->goal = ( new Goal() )
-            ->setId( $data['goalId'] )
+//            ->setId( $data['goalId'] )
             ->setDate( $data['goalDate'] )
             ->setDone( $data['goalDone'] )
             ->setDescription( $data['goalDescription'] )
-            ->setUserId( $data['goalUserId'] );
+            ->setUserId( isset( $data['goalUserId'] ) ? $data['goalUserId'] : $this->getGoal()->getUserId() );
     }
 
     /**
@@ -45,13 +48,16 @@ class GoalCtrl
      */
     public function saveRequest()
     {
-        $this->setGoalFromArray( $_POST );
+        check_ajax_referer( 'nonceGoal','nonce' );
+
+        $this->setGoalFromArray( array_map( function( $elem ){ return htmlspecialchars( $elem ); }, $_POST ) );
 
         $this->save();
 
         echo json_encode([
             $this->goal
         ]);
+        wp_die();
     }
 
     public function save()
@@ -65,5 +71,15 @@ class GoalCtrl
                 'meta_value' => $this->goal->getDate() . '||' . $this->goal->getDescription() . '||' . $this->goal->isDone()
             ]
         );
+    }
+
+    public function getGoal(): Goal
+    {
+        if( ! isset( $this->goal ) )
+        {
+            $this->goal = new Goal();
+        }
+
+        return $this->goal;
     }
 }

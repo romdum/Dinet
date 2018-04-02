@@ -10,7 +10,7 @@
         <h2>Objectifs</h2>
     </header>
     <?php if( isset( $display ) && isset( $display['addGoal'] ) && $display['addGoal'] ): ?>
-        <input type="text" placeholder="Nouvel objectif">
+        <input type="text" id="newGoalInput" placeholder="Nouvel objectif">
         <input type="button" value="Ajouter" class="button button-primary" id="addGoalBtn">
     <?php endif; ?>
     <ul>
