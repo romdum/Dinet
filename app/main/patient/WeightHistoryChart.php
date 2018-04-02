@@ -9,7 +9,7 @@ require_once plugin_dir_path( __FILE__ ) . '../Chart.php';
 
 class WeightHistoryChart extends Chart
 {
-    private const NUMBER_OF_DATA = 10;
+    const NUMBER_OF_DATA = 10;
 
     /** @var PatientCtrl */
     private $PatientCtrl;
