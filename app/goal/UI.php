@@ -11,9 +11,14 @@ require_once UtilPath::getGoalPath( 'controllers/GoalCtrl' );
 
 class UI
 {
+    private $goal;
+
     public function __construct()
     {
+        $this->goal = new GoalCtrl();
 
+        add_action( 'init', array( $this, 'loadJS' ) );
+        add_action( 'wp_ajax_goalSaveRequest', array( $this->goal, 'saveRequest' ) );
     }
 
     public function loadJS()
@@ -23,10 +28,9 @@ class UI
 
     public function displayGoals( $userId = null )
     {
-        $userId = isset( $userId ) ? $userId : get_current_user_id();
+        $this->goal->getGoal()->setUserId(isset( $userId ) ? $userId : get_current_user_id() );
 
-        $goal = new GoalCtrl();
-        $goals = $goal->getAll($userId);
+        $goals = $this->goal->getAll();
 
         $display['addGoal'] = true;
 
