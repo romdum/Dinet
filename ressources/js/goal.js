@@ -1,30 +1,34 @@
 jQuery(function(){
     jQuery('#addGoalBtn').click(function(){
-        Goal.add( Goal.getNewGoalInput().val() );
+        Goal.add();
     });
 });
 
 let Goal = (function()
 {
-    let add = function( description )
+    let add = function()
     {
-        addRequest( description ).success(function(){
-            console.log("ok")
+        addRequest().success(function(response){
+            jQuery('#goalList').append('<li>'+Goal.getNewGoalInput().val()+'</li>');
+            Goal.getNewGoalInput().val('')
         });
     };
 
-    let addRequest = function( description )
+    let addRequest = function()
     {
+        let data = {
+            action          : "goalSaveRequest",
+            nonce           : utilGoal.nonce,
+            goalDescription : Goal.getNewGoalInput().val(),
+            goalDone        : false,
+            goalDate        : "02/04/2018",
+            goalUserId      : parseInt(jQuery('#patient_id').val())
+        };
+
         return jQuery.post({
             url     : utilGoal.ajaxURL,
             dataType: "json",
-            data    : {
-                action          : "goalSaveRequest",
-                nonce           : utilGoal.nonce,
-                goalDescription : description,
-                goalDone        : false,
-                goalDate        : "02/04/2018"
-            }
+            data    : data
         });
     };
 

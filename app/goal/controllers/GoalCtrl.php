@@ -16,20 +16,19 @@ class GoalCtrl
      * @return array
      * @throws TypeError
      */
-    public function getAll()
+    public function getAll( $userId )
     {
         global $wpdb;
         $queryGoals = $wpdb->get_results( $wpdb->prepare(
-            "SELECT * FROM {$wpdb->usermeta} WHERE meta_key = 'dinet_goal' AND user_id = '%d'", $this->goal->getUserId() ),
+            "SELECT * FROM {$wpdb->usermeta} WHERE meta_key = 'dinet_goal' AND user_id = '%d'", $userId ),
         ARRAY_A );
 
         return array_map( function($val){
-            return [
-                'id'          => $val['umeta_id'],
-                'date'        => explode( '||', $val['meta_value'] )[0],
-                'description' => explode( '||', $val['meta_value'] )[1],
-                'done'        => explode( '||', $val['meta_value'] )[2]
-            ];
+            return ( new Goal() )
+	            ->setId( $val['umeta_id'] )
+	            ->setDate( explode( '||', $val['meta_value'] )[0] )
+	            ->setDescription( explode( '||', $val['meta_value'] )[1] )
+	            ->setDone( explode( '||', $val['meta_value'] )[2] );
         }, $queryGoals );
     }
 
@@ -40,7 +39,7 @@ class GoalCtrl
             ->setDate( $data['goalDate'] )
             ->setDone( $data['goalDone'] )
             ->setDescription( $data['goalDescription'] )
-            ->setUserId( isset( $data['goalUserId'] ) ? $data['goalUserId'] : $this->getGoal()->getUserId() );
+            ->setUserId( $data['goalUserId'] );
     }
 
     /**
@@ -63,7 +62,7 @@ class GoalCtrl
     public function save()
     {
         global $wpdb;
-        $wpdb->insert(
+        $result = $wpdb->insert(
             $wpdb->usermeta,
             [
                 'user_id'    => $this->goal->getUserId(),
