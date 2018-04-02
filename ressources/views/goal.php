@@ -12,11 +12,12 @@
     <?php if( isset( $display ) && isset( $display['addGoal'] ) && $display['addGoal'] ): ?>
         <input type="text" id="newGoalInput" placeholder="Nouvel objectif">
         <input type="button" value="Ajouter" class="button button-primary" id="addGoalBtn">
+        <input type="hidden" value="<?= $_GET['patient_id'] ?>" id="patient_id">
     <?php endif; ?>
-    <ul>
+    <ul id="goalList">
         <?php foreach( $goals as $goal ): ?>
             <li>
-                <?php $goal->getDescription(); ?>
+                <?= $goal->getDescription(); ?>
             </li>
         <?php endforeach; ?>
     </ul>

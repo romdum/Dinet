@@ -23,14 +23,14 @@ class UI
 
     public function loadJS()
     {
-        UtilWP::loadJS( 'goal', UtilPath::getJSPath( 'goal.min' ), ['jquery'] );
+        UtilWP::loadJS( 'goal', UtilPath::getJSPath( 'goal' ), ['jquery'] );
     }
 
     public function displayGoals( $userId = null )
     {
         $this->goal->getGoal()->setUserId(isset( $userId ) ? $userId : get_current_user_id() );
 
-        $goals = $this->goal->getAll();
+        $goals = $this->goal->getAll( $_GET['patient_id'] );
 
         $display['addGoal'] = true;
 
