@@ -40,6 +40,11 @@ class GoalCtrl
             ->setDone( $data['goalDone'] )
             ->setDescription( $data['goalDescription'] )
             ->setUserId( $data['goalUserId'] );
+
+        if( isset( $data['goalId'] ) )
+        {
+        	$this->goal->setId( $data['goalId'] );
+        }
     }
 
     /**
@@ -51,25 +56,23 @@ class GoalCtrl
 
         $this->setGoalFromArray( array_map( function( $elem ){ return htmlspecialchars( $elem ); }, $_POST ) );
 
-        $this->save();
+        $this->goal->setId( $this->save() );
 
         echo json_encode([
-            $this->goal
+	        'id' => $this->goal->getId(),
+        	'icon' => UI::getUncheckIcon(),
+	        'description' => $this->goal->getDescription()
         ]);
         wp_die();
     }
 
     public function save()
     {
-        global $wpdb;
-        $result = $wpdb->insert(
-            $wpdb->usermeta,
-            [
-                'user_id'    => $this->goal->getUserId(),
-                'meta_key'   => 'dinet_goal',
-                'meta_value' => $this->goal->getDate() . '||' . $this->goal->getDescription() . '||' . $this->goal->isDone()
-            ]
-        );
+    	return add_user_meta(
+		    $this->goal->getUserId(),
+		    'dinet_goal',
+		    $this->goal->getDate() . '||' . $this->goal->getDescription() . '||' . $this->goal->isDone()
+	    );
     }
 
     public function getGoal(): Goal
@@ -80,5 +83,44 @@ class GoalCtrl
         }
 
         return $this->goal;
+    }
+
+    public function loadGoalWithId( $goalId )
+    {
+    	global $wpdb;
+    	$data = $wpdb->get_row( $wpdb->prepare(
+    		"SELECT * FROM {$wpdb->usermeta} WHERE umeta_id = %d", $goalId
+	    ), ARRAY_A);
+
+		$this->goal = ( new Goal() )
+			->setId( $data['umeta_id'] )
+			->setUserId( $data['user_id'] )
+			->setDate( explode( '||', $data['meta_value'] )[0] )
+			->setDescription( explode( '||', $data['meta_value'] )[1] )
+			->setDone( explode( '||', $data['meta_value'] )[2] );
+    }
+
+    public function setDoneRequest()
+    {
+		global $wpdb;
+	    $this->loadGoalWithId( $_POST['goalId'] );
+	    $this->goal->setDone( ! $this->goal->isDone() );
+
+		$wpdb->update(
+			$wpdb->usermeta,
+			[
+				'meta_value' => $this->goal->getDate() . '||' . $this->goal->getDescription() . '||' . $this->goal->isDone()
+			],
+			[
+				'umeta_id' => $this->goal->getId()
+			]
+		);
+
+		echo json_encode([
+			'isDone' => $this->goal->isDone(),
+			'icon'   => $this->goal->isDone() ? UI::getCheckIcon() : UI::getUncheckIcon()
+		]);
+
+	    wp_die();
     }
 }
