@@ -43,7 +43,6 @@ let Goal = (function()
     let setDone = function(goalId)
     {
         setDoneRequest(goalId).success(function(response){
-            console.log(response);
             let $li = jQuery('li[data-id="'+goalId+'"]');
             if( response.isDone ){
                 $li.addClass('goalDone');
