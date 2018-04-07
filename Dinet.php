@@ -104,5 +104,8 @@ class Dinet
     }
 }
 
-$Dinet = new Dinet();
-$Dinet->load();
+if( is_admin() )
+{
+	$Dinet = new Dinet();
+	$Dinet->load();
+}
