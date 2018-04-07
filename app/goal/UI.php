@@ -8,6 +8,7 @@ use Dinet\UtilWP;
 
 require_once UtilPath::getGoalPath( 'models/Goal' );
 require_once UtilPath::getGoalPath( 'controllers/GoalCtrl' );
+require_once UtilPath::getGoalPath( 'repository/GoalRepository' );
 
 class UI
 {
@@ -25,7 +26,13 @@ class UI
 
     public function loadJS()
     {
-        UtilWP::loadJS( 'goal', UtilPath::getJSPath( 'goal' ), ['jquery'] );
+	    UtilWP::loadJS( 'goalSelector', UtilPath::getJSPath( 'goal/Selector' ), ['jquery'] );
+	    UtilWP::loadJS( 'goalAjax', UtilPath::getJSPath( 'goal/Ajax' ), ['jquery'], [
+		    'nonceNewGoal' => wp_create_nonce( 'nonceNewGoal' ),
+		    'nonceSetGoalDone' => wp_create_nonce( 'nonceSetGoalDone' )
+	    ]);
+	    UtilWP::loadJS( 'goal', UtilPath::getJSPath( 'goal/Goal' ), ['jquery'] );
+	    UtilWP::loadJS( 'goalInit', UtilPath::getJSPath( 'goal/init' ), ['jquery'] );
     }
 
     public function loadCSS()
@@ -38,11 +45,11 @@ class UI
     {
         $this->goal->getGoal()->setUserId(isset( $userId ) ? $userId : get_current_user_id() );
 
-        $goals = $this->goal->getAll( $_GET['patient_id'] );
+        $goals = $this->goal->getRepository()->getAll( $_GET['patient_id'] );
 
         $display['addGoal'] = true;
 
-        include UtilPath::getViewsPath('goal' );
+        include UtilPath::getViewsPath('goal/goal' );
     }
 
     public static function getUncheckIcon()
