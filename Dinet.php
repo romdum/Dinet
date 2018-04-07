@@ -45,7 +45,6 @@ class Dinet
     {
         $this->loadStaticVar();
         $this->loadHook();
-        $this->loadLanguage();
 
         $mainUI = new UI();
         $mainUI->load();
@@ -90,11 +89,6 @@ class Dinet
         add_action( 'wp_ajax_ajaxSavePatient', array( $PatientCtrl, 'ajaxSavePatient' ) );
     }
 
-    private function loadLanguage() : void
-    {
-        load_plugin_textdomain( 'dinet', false, basename( dirname( __FILE__ ) ) . '/lang'  );
-    }
-
     private function loadStaticVar() : void
     {
         self::$TABLE_FOOD      = $GLOBALS["wpdb"]->prefix . 'dinet_food';
@@ -104,5 +98,8 @@ class Dinet
     }
 }
 
-$Dinet = new Dinet();
-$Dinet->load();
+if( is_admin() )
+{
+	$Dinet = new Dinet();
+	$Dinet->load();
+}
