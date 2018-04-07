@@ -25,7 +25,10 @@ class UI
 
     public function loadJS()
     {
-        UtilWP::loadJS( 'goal', UtilPath::getJSPath( 'goal' ), ['jquery'] );
+        UtilWP::loadJS( 'goal', UtilPath::getJSPath( 'goal' ), ['jquery'], [
+            'nonceNewGoal' => wp_create_nonce( 'nonceNewGoal' ),
+            'nonceSetGoalDone' => wp_create_nonce( 'nonceSetGoalDone' )
+        ]);
     }
 
     public function loadCSS()

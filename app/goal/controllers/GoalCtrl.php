@@ -52,7 +52,7 @@ class GoalCtrl
      */
     public function saveRequest()
     {
-        check_ajax_referer( 'nonceGoal','nonce' );
+        check_ajax_referer( 'nonceNewGoal','nonce' );
 
         $this->setGoalFromArray( array_map( function( $elem ){ return htmlspecialchars( $elem ); }, $_POST ) );
 
@@ -102,6 +102,8 @@ class GoalCtrl
 
     public function setDoneRequest()
     {
+	    check_ajax_referer( 'nonceSetGoalDone','nonce' );
+
 		global $wpdb;
 	    $this->loadGoalWithId( $_POST['goalId'] );
 	    $this->goal->setDone( ! $this->goal->isDone() );

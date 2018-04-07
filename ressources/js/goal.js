@@ -21,7 +21,7 @@ let Goal = (function()
     {
         let data = {
             action          : "goalSaveRequest",
-            nonce           : utilGoal.nonce,
+            nonce           : utilGoal.nonceNewGoal,
             goalDescription : Goal.getNewGoalInput().val(),
             goalDone        : 0,
             goalDate        : "02/04/2018",
@@ -67,7 +67,7 @@ let Goal = (function()
     {
         let data = {
             action     : "goalSetDoneRequest",
-            nonce      : utilGoal.nonce,
+            nonce      : utilGoal.nonceSetGoalDone,
             goalUserId : parseInt(jQuery('#patient_id').val()),
             goalId     : goalId
         };
