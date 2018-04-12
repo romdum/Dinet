@@ -60,37 +60,37 @@ class Patient
 	    return isset( $this->phone ) ? $this->phone : '';
     }
 
-	public function setFirstName( string $firstName ): Patient
+	public function setFirstName( ?string $firstName ): Patient
 	{
 		$this->firstName = $firstName;
 		return $this;
 	}
 
-	public function setLastName( string $lastName ): Patient
+	public function setLastName( ?string $lastName ): Patient
 	{
 		$this->lastName = $lastName;
 		return $this;
 	}
 
-	public function setWeight( float $weight ): Patient
+	public function setWeight( ?float $weight ): Patient
 	{
 		$this->weight = $weight;
 		return $this;
 	}
 
-	public function setHeight( float $height ): Patient
+	public function setHeight( ?float $height ): Patient
 	{
 		$this->height = $height;
 		return $this;
 	}
 
-	public function setPhone( string $phone ): Patient
+	public function setPhone( ?string $phone ): Patient
 	{
 		$this->phone = $phone;
 		return $this;
 	}
 
-	public function setObservation( string $observation ): Patient
+	public function setObservation( ?string $observation ): Patient
 	{
 		$this->observation = $observation;
 		return $this;

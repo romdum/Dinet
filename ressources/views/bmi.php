@@ -3,13 +3,13 @@
     <header>
         <h2>Mon IMC</h2>
     </header>
-    <p id="bmip" style="color: <?= $PatientCtrl->getImcColor() ?>; text-align: center;">
-        <span id="bmi" style="font-size: <?= $PatientCtrl->getImcFontSize(); ?>;">
-            <?= $PatientCtrl->getImc() ?>
+    <p id="bmip" style="color: <?= $PatientCtrl->getBMI()->getColor() ?>; text-align: center;">
+        <span id="bmi" style="font-size: <?= $PatientCtrl->getBMI()->getFontSize(); ?>;">
+            <?= $PatientCtrl->getBMI() ?>
         </span>
         <br>
         <span id="bmi_comment">
-            <?= $PatientCtrl->getImcComment() ?>
+            <?= $PatientCtrl->getBMI()->getComment() ?>
         </span>
     </p>
 </section>

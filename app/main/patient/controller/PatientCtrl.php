@@ -5,15 +5,14 @@ namespace Dinet\Patient;
 use Dinet\UtilDate;
 use Dinet\UtilPath;
 
-require_once UtilPath::getPatientPath( 'PatientSaver' );
+require_once UtilPath::getPatientPath( 'repository/PatientRepository' );
+require_once UtilPath::getPatientPath( 'controller/BMICtrl' );
 require_once UtilPath::getPatientPath( 'PatientLoader' );
-require_once UtilPath::getPatientPath( 'PatientBMI' );
+require_once UtilPath::getPatientPath( 'WeightHistoryChart' );
 
 class PatientCtrl
 {
-    use PatientSaver;
     use PatientLoader;
-    use PatientBMI;
 
     const AUTO_LOAD = [
         'Height',
@@ -32,6 +31,12 @@ class PatientCtrl
     /** @var PatientSettings */
     public $settings;
 
+    /** @var PatientRepository */
+    private $repository;
+
+    /** @var BMICtrl */
+    private $bmi;
+
     /**
      * @return Patient
      */
@@ -49,7 +54,6 @@ class PatientCtrl
     public function ajaxSavePatient(): void
     {
         check_ajax_referer( isset( $_POST['nonceName'] ) ? $_POST['nonceName'] : 'fail', 'nonce' );
-        require_once UtilPath::getPatientPath( 'WeightHistoryChart' );
 
         $postPatientId = 'patientId';
         if( isset( $_POST[$postPatientId] ) && $_POST[$postPatientId] !== $this->getPatient()->getUserId() )
@@ -61,7 +65,15 @@ class PatientCtrl
             $this->Patient = new Patient();
         }
 
-        $this->save( $_POST );
+        $this->Patient
+	        ->setFirstName( $_POST['FirstName'] )
+	        ->setLastName( $_POST['LastName'] )
+	        ->setHeight( $this->reformatHeight( $_POST['Height'] ) )
+	        ->setObservation( $_POST['Observation'] )
+	        ->setPhone( $_POST['Phone'] )
+	        ->setWeight( $_POST['Weight'] );
+
+        $this->getRepository()->save( $this->Patient );
         $this->load();
 
         $result = [];
@@ -71,10 +83,10 @@ class PatientCtrl
         $result['dataset'] = $Chart->getDataset();
         $result['labels']  = $Chart->getXLabels();
 
-        $result['bmi']['number']    = $this->getImc();
-        $result['bmi']['color']     = $this->getImcColor();
-        $result['bmi']['comment']   = $this->getImcComment();
-        $result['bmi']['font_size'] = $this->getImcFontSize();
+        $result['bmi']['number']    = $this->getBMI()->getBmi();
+        $result['bmi']['color']     = $this->getBMI()->getColor();
+        $result['bmi']['comment']   = $this->getBMI()->getComment();
+        $result['bmi']['font_size'] = $this->getBMI()->getFontSize();
 
         echo json_encode( $result );
         wp_die();
@@ -82,16 +94,7 @@ class PatientCtrl
 
     public function getWeightHistory( int $length = -1 ) : array
     {
-        global $wpdb;
-        $sql = "
-            SELECT SUBSTR(meta_key,1+LENGTH('dinetWeight_')) AS meta_key, meta_value 
-            FROM {$wpdb->usermeta} 
-            WHERE meta_key LIKE 'dinetWeight_%' 
-            AND user_id = {$this->getPatient()->getUserId()} 
-            ORDER BY meta_key DESC;
-        ";
-
-        $result = $wpdb->get_results( $sql, ARRAY_A );
+    	$result = $this->getRepository()->getWeightHistory( $this->getPatient() );
 
         if( ! is_array( $result ) )
         {
@@ -123,8 +126,33 @@ class PatientCtrl
         return $result;
     }
 
-    public function getSettings(): PatientSettings
+    public function getSettings(): ?PatientSettings
     {
         return $this->settings;
     }
+
+    public function getRepository(): PatientRepository
+    {
+    	if( ! isset( $this->repository ) )
+	    {
+	    	$this->repository = new PatientRepository();
+	    }
+	    return $this->repository;
+    }
+
+    public function reformatHeight( $height ): float
+    {
+	    $height = floatval( str_replace( ",", ".", $height ) );
+	    return $height > 3 ? $height / 100 : $height;
+    }
+
+	public function getBMI()
+	{
+		if( ! isset( $this->bmi ) )
+		{
+			$this->bmi = new BMICtrl( $this->getPatient()->getHeight(), $this->getPatient()->getWeight() );
+		}
+
+		return $this->bmi;
+	}
 }

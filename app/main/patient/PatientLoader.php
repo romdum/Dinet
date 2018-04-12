@@ -41,9 +41,6 @@ trait PatientLoader
             ->setFirstName( get_metadata( 'user', $this->Patient->getUserId(), 'first_name', true ) )
             ->setLastName( get_metadata( 'user', $this->Patient->getUserId(), 'last_name', true ) );
 
-        $this->calcBMI();
-        $this->loadImcComment();
-
         $this->settings = new PatientSettings( $this->Patient->getUserId() );
     }
 

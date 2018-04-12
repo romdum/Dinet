@@ -22,10 +22,7 @@ class Installer
         /*
          * Add parameter dinet in options table to know if the plugin is installed
          */
-        $GLOBALS['wpdb']->insert(
-            $GLOBALS['wpdb']->options,
-            array( "option_name" => "dinet" )
-        );
+        update_option( 'dinet', Dinet::DB_VERSION );
     }
 
     private static function createFoodUsersTable()
@@ -134,5 +131,18 @@ class Installer
     public static function isInstalled()
     {
         return $GLOBALS['wpdb']->get_var( "SELECT COUNT(1) FROM {$GLOBALS['wpdb']->options} WHERE option_name = 'dinet'" ) > 0;
+    }
+
+    public static function upgrade()
+    {
+    	global $wpdb;
+	    $dbVersion = $wpdb->get_var( "SELECT COUNT(1) FROM {$wpdb->options} WHERE option_name = 'dinet'" ) > 0;
+
+	    if( $dbVersion !== Dinet::DB_VERSION )
+	    {
+		    update_option( 'dinet', Dinet::DB_VERSION );
+
+		    // run here sql if database structure change
+	    }
     }
 }

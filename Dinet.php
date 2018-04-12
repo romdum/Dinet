@@ -27,13 +27,14 @@ require_once UtilPath::getMainPath( 'UI' );
 require_once UtilPath::getMainPath( 'Settings' );
 require_once UtilPath::getMainPath( 'SettingsEnum' );
 require_once UtilPath::getMainPath( 'Citation' );
-require_once UtilPath::getPatientPath( 'Patient' );
-require_once UtilPath::getPatientPath( 'PatientCtrl' );
+require_once UtilPath::getPatientPath( 'model/Patient' );
+require_once UtilPath::getPatientPath( 'controller/PatientCtrl' );
 
 class Dinet
 {
     const NAME = 'Dinet';
     const SLUG = 'dinet';
+    const DB_VERSION = '1.0';
 
     /** @var string */
     public static $TABLE_FOOD, $TABLE_FOOD_USER;
