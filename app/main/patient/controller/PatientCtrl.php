@@ -2,30 +2,27 @@
 
 namespace Dinet\Patient;
 
-use Dinet\UtilDate;
+use Dinet\Dinet;
 use Dinet\UtilPath;
 
 require_once UtilPath::getPatientPath( 'repository/PatientRepository' );
 require_once UtilPath::getPatientPath( 'controller/BMICtrl' );
-require_once UtilPath::getPatientPath( 'PatientLoader' );
+require_once UtilPath::getPatientPath( 'controller/WeightHistoryCtrl' );
+require_once UtilPath::getPatientPath( 'model/Weight' );
 require_once UtilPath::getPatientPath( 'WeightHistoryChart' );
+require_once UtilPath::getPatientPath( 'PatientSettings' );
 
 class PatientCtrl
 {
-    use PatientLoader;
+	const AUTO_LOAD = [
+		Dinet::SLUG . 'Observation' => 'Observation',
+		Dinet::SLUG . 'Phone'       => 'Phone',
+		Dinet::SLUG . 'Height'      => 'Height',
+		'first_name'                => 'FirstName',
+		'last_name'                 => 'LastName',
+	];
 
-    const AUTO_LOAD = [
-        'Height',
-        'Observation',
-        'Phone'
-    ];
-
-    const AUTO_SAVE = [
-        'Observation',
-        'Phone'
-    ];
-
-    /** @var Patient */
+	/** @var Patient */
     private $Patient;
 
     /** @var PatientSettings */
@@ -37,9 +34,9 @@ class PatientCtrl
     /** @var BMICtrl */
     private $bmi;
 
-    /**
-     * @return Patient
-     */
+    /** @var WeightHistoryCtrl */
+    private $weightHistory;
+
     public function getPatient(): Patient
     {
         $this->Patient = isset( $this->Patient ) ? $this->Patient : new Patient();
@@ -71,7 +68,7 @@ class PatientCtrl
 	        ->setHeight( $this->reformatHeight( $_POST['Height'] ) )
 	        ->setObservation( $_POST['Observation'] )
 	        ->setPhone( $_POST['Phone'] )
-	        ->setWeight( $_POST['Weight'] );
+	        ->setWeight( ( new Weight() )->setValue( $_POST['Weight'] )->setTimestamp( time() ) );
 
         $this->getRepository()->save( $this->Patient );
         $this->load();
@@ -92,38 +89,13 @@ class PatientCtrl
         wp_die();
     }
 
-    public function getWeightHistory( int $length = -1 ) : array
+    public function getWeightHistory() : WeightHistoryCtrl
     {
-    	$result = $this->getRepository()->getWeightHistory( $this->getPatient() );
-
-        if( ! is_array( $result ) )
-        {
-            return [];
-        }
-
-        if( $length > 0 )
-        {
-            $result = array_slice( $result, 0, $length );
-        }
-
-        return $this->arrayUniqueWeightHistory( $result );
-    }
-
-    private function arrayUniqueWeightHistory( array $weightHistory )
-    {
-        $result = $weightHistory;
-        for( $i = 0; $i < count( $weightHistory ); $i++ )
-        {
-            for( $j = $i+1; $j < count( $weightHistory ); $j++ )
-            {
-                if( date( UtilDate::DATE_FORMAT_FR, $weightHistory[$i]['meta_key'] ) ===
-                    date( UtilDate::DATE_FORMAT_FR, $weightHistory[$j]['meta_key'] ) )
-                {
-                    unset($result[$j]);
-                }
-            }
-        }
-        return $result;
+    	if( ! isset( $this->weightHistory ) )
+	    {
+		    $this->weightHistory = new WeightHistoryCtrl( $this->getPatient() );
+	    }
+    	return $this->weightHistory;
     }
 
     public function getSettings(): ?PatientSettings
@@ -150,9 +122,33 @@ class PatientCtrl
 	{
 		if( ! isset( $this->bmi ) )
 		{
-			$this->bmi = new BMICtrl( $this->getPatient()->getHeight(), $this->getPatient()->getWeight() );
+			$this->bmi = new BMICtrl( $this->getPatient()->getHeight(), $this->getPatient()->getWeight()->getValue() );
 		}
 
 		return $this->bmi;
+	}
+
+	public function load() : void
+	{
+		$this->autoLoad();
+
+		$this->Patient->setWeight( $this->getWeightHistory()->getFirst() );
+
+		$this->settings = new PatientSettings( $this->Patient->getUserId() );
+	}
+
+	private function autoLoad()
+	{
+		$metadata = get_metadata( 'user', $this->Patient->getUserId() );
+
+		foreach( self::AUTO_LOAD as $key => $method )
+		{
+			$method = 'set' . $method;
+
+			if( isset( $metadata[$key] ) && method_exists( $this->Patient, $method ) )
+			{
+				$this->Patient->{$method}( $metadata[$key][0] );
+			}
+		}
 	}
 }

@@ -14,32 +14,14 @@ class PatientRepository
 		'last_name'                 => 'LastName',
 	];
 
-	public function findAll()
-	{
-
-	}
-
-	public function getWeightHistory( Patient $patient )
-	{
-		global $wpdb;
-		$sql = "
-            SELECT SUBSTR(meta_key,1+LENGTH('dinetWeight_')) AS meta_key, meta_value 
-            FROM {$wpdb->usermeta} 
-            WHERE meta_key LIKE 'dinetWeight_%' 
-            AND user_id = {$patient->getUserId()} 
-            ORDER BY meta_key DESC;
-        ";
-		return $wpdb->get_results( $sql, ARRAY_A );
-	}
-
 	public function save( Patient $patient )
 	{
 		$this->autoSave( $patient );
 
 		update_user_meta(
 			$patient->getUserId(),
-			'dinetWeight_' . time(),
-			htmlspecialchars( $patient->getWeight() )
+			'dinetWeight_' . $patient->getWeight()->getTimestamp(),
+			htmlspecialchars( $patient->getWeight()->getValue() )
 		);
 	}
 

@@ -23,7 +23,7 @@
         </div>
         <div class="patient_record_form_group">
             <label for="weight">Poids :</label>
-            <input id="weight" type="text" name="Weight" value="<?= $PatientCtrl->getPatient()->getWeight() ?>">
+            <input id="weight" type="text" name="Weight" value="<?= $PatientCtrl->getPatient()->getWeight()->getValue() ?>">
         </div>
         <div class="patient_record_form_group">
             <label for="height">Taille :</label>

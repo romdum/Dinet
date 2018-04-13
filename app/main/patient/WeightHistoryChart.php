@@ -28,15 +28,16 @@ class WeightHistoryChart extends Chart
     {
         $dataset = [];
 
-        $d = $this->getPatientCtrl()->getWeightHistory( self::NUMBER_OF_DATA );
+        $d = $this->getPatientCtrl()->getWeightHistory()->getValues( self::NUMBER_OF_DATA );
 
         foreach( $this->getValueAttributes() as $label => $color )
         {
             $data = [];
 
-            foreach( array_reverse( $d ) as $item )
+            /** @var Weight $item */
+	        foreach( array_reverse( $d ) as $item )
             {
-                array_push( $data, $item['meta_value'] );
+                array_push( $data, $item->getValue() );
             }
 
             array_push( $dataset, [
@@ -56,16 +57,14 @@ class WeightHistoryChart extends Chart
      */
     public function getXLabels() : array
     {
-        $dates = $this->PatientCtrl->getWeightHistory( self::NUMBER_OF_DATA );
+        $dates = $this->PatientCtrl->getWeightHistory()->getValues( self::NUMBER_OF_DATA );
         $dates = array_reverse( $dates );
         $result = [];
 
-        foreach ( $dates as $item )
+        /** @var Weight $date */
+	    foreach ( $dates as $date )
         {
-            if( isset( $item['meta_key'] ) )
-            {
-                $result[] = date( UtilDate::DATE_FORMAT_FR, $item['meta_key'] );
-            }
+            $result[] = date( UtilDate::DATE_FORMAT_FR, $date->getTimestamp() );
         }
 
         return $result;

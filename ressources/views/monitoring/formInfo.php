@@ -15,7 +15,7 @@
         </div>
         <div>
             <label for="weight">Poids</label>
-            <input type="number" placeholder="Poids" name="Weight" id="weight" value="<?= $PatientCtrl->getPatient()->getWeight() ?>">
+            <input type="number" placeholder="Poids" name="Weight" id="weight" value="<?= $PatientCtrl->getPatient()->getWeight()->getValue() ?>">
         </div>
         <input type="button" value="Enregistrer" class="save_info" id="formInfoSubmit">
         <input type="hidden" id="nonceName" value="<?= $nonceName ?>">

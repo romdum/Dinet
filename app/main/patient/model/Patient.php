@@ -4,10 +4,39 @@ namespace Dinet\Patient;
 
 class Patient
 {
+	/**
+	 * @var int
+	 */
     private $userId;
-    private $firstName, $lastName;
-    private $weight, $height;
+
+    /**
+     * @var string
+     */
+    private $firstName;
+
+    /**
+     * @var string
+     */
+	private $lastName;
+
+    /**
+     * @var Weight
+     */
+    private $weight;
+
+    /**
+     * @var float
+     */
+    private $height;
+
+    /**
+     * @var string
+     */
     private $phone;
+
+    /**
+     * @var string
+     */
     private $observation;
 
     public function __construct( $userId = null )
@@ -30,9 +59,9 @@ class Patient
         return isset( $this->lastName ) ? $this->lastName : '';
     }
 
-    public function getWeight(): float
+    public function getWeight(): Weight
     {
-        return floatval( $this->weight );
+        return $this->weight;
     }
 
     public function getHeight(): float
@@ -72,7 +101,7 @@ class Patient
 		return $this;
 	}
 
-	public function setWeight( ?float $weight ): Patient
+	public function setWeight( Weight $weight ): Patient
 	{
 		$this->weight = $weight;
 		return $this;
