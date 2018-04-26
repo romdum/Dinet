@@ -5,8 +5,8 @@ namespace Dinet\Patient;
 use Dinet\SettingsEnum;
 use Dinet\UtilPath;
 
-require_once UtilPath::getPatientPath( 'PatientCtrl' );
-require_once UtilPath::getPatientPath( 'Patient' );
+require_once UtilPath::getPatientPath( 'controller/PatientCtrl' );
+require_once UtilPath::getPatientPath( 'model/Patient' );
 
 class PatientSettingsUI
 {

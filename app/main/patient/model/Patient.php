@@ -4,10 +4,39 @@ namespace Dinet\Patient;
 
 class Patient
 {
+	/**
+	 * @var int
+	 */
     private $userId;
-    private $firstName, $lastName;
-    private $weight, $height;
+
+    /**
+     * @var string
+     */
+    private $firstName;
+
+    /**
+     * @var string
+     */
+	private $lastName;
+
+    /**
+     * @var Weight
+     */
+    private $weight;
+
+    /**
+     * @var float
+     */
+    private $height;
+
+    /**
+     * @var string
+     */
     private $phone;
+
+    /**
+     * @var string
+     */
     private $observation;
 
     public function __construct( $userId = null )
@@ -30,9 +59,9 @@ class Patient
         return isset( $this->lastName ) ? $this->lastName : '';
     }
 
-    public function getWeight(): float
+    public function getWeight(): Weight
     {
-        return floatval( $this->weight );
+        return $this->weight;
     }
 
     public function getHeight(): float
@@ -60,37 +89,37 @@ class Patient
 	    return isset( $this->phone ) ? $this->phone : '';
     }
 
-	public function setFirstName( string $firstName ): Patient
+	public function setFirstName( ?string $firstName ): Patient
 	{
 		$this->firstName = $firstName;
 		return $this;
 	}
 
-	public function setLastName( string $lastName ): Patient
+	public function setLastName( ?string $lastName ): Patient
 	{
 		$this->lastName = $lastName;
 		return $this;
 	}
 
-	public function setWeight( float $weight ): Patient
+	public function setWeight( Weight $weight ): Patient
 	{
 		$this->weight = $weight;
 		return $this;
 	}
 
-	public function setHeight( float $height ): Patient
+	public function setHeight( ?float $height ): Patient
 	{
 		$this->height = $height;
 		return $this;
 	}
 
-	public function setPhone( string $phone ): Patient
+	public function setPhone( ?string $phone ): Patient
 	{
 		$this->phone = $phone;
 		return $this;
 	}
 
-	public function setObservation( string $observation ): Patient
+	public function setObservation( ?string $observation ): Patient
 	{
 		$this->observation = $observation;
 		return $this;
