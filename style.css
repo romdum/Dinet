@@ -104,6 +104,11 @@ body.toplevel_page_dinet_plugin section header h2 {
 
 .add_info{
     text-align: center;
+    width: 120px;
+}
+
+.add_info h2{
+    text-align: left;
 }
 
 .add_info div input{
@@ -182,7 +187,7 @@ body.toplevel_page_dinet_plugin section header h2 {
 }
 
 .dinet_last_food{
-    flex: 1;
+    flex: 3;
 }
 
 .btn-delete{
@@ -224,7 +229,7 @@ body.toplevel_page_dinet_plugin section header h2 {
 }
 
 .goal{
-    margin-bottom: 1rem;
+    flex: 1;
 }
 
 .goal input[type="text"]{
@@ -317,6 +322,15 @@ body.toplevel_page_dinet_plugin section header h2 {
 
     .search_bar{
         width: 100%;
+    }
+
+    .add_info{
+        width: auto;
+        margin-bottom: 1rem;
+    }
+
+    .goal{
+        margin-top: 1rem;
     }
 }
 

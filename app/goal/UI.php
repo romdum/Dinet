@@ -18,6 +18,8 @@ class UI
     {
         $this->goal = new GoalCtrl();
 
+
+
         add_action( 'init', array( $this, 'loadJS' ) );
         add_action( 'init', array( $this, 'loadCSS' ) );
         add_action( 'wp_ajax_goalSaveRequest', array( $this->goal, 'saveRequest' ) );
@@ -26,18 +28,21 @@ class UI
 
     public function loadJS()
     {
-	    UtilWP::loadJS( 'goalSelector', UtilPath::getJSPath( 'goal/Selector' ), ['jquery'] );
-	    UtilWP::loadJS( 'goalAjax', UtilPath::getJSPath( 'goal/Ajax' ), ['jquery'], [
-		    'nonceNewGoal' => wp_create_nonce( 'nonceNewGoal' ),
-		    'nonceSetGoalDone' => wp_create_nonce( 'nonceSetGoalDone' )
-	    ]);
-	    UtilWP::loadJS( 'goal', UtilPath::getJSPath( 'goal/Goal' ), ['jquery'] );
-	    UtilWP::loadJS( 'goalInit', UtilPath::getJSPath( 'goal/init' ), ['jquery'] );
+        if( current_user_can( 'administrator' ) )
+        {
+            UtilWP::loadJS( 'goalSelector', UtilPath::getJSPath( 'goal/Selector.min' ), ['jquery'] );
+            UtilWP::loadJS( 'goalAjax', UtilPath::getJSPath( 'goal/Ajax.min' ), ['jquery'], [
+                'nonceNewGoal' => wp_create_nonce( 'nonceNewGoal' ),
+                'nonceSetGoalDone' => wp_create_nonce( 'nonceSetGoalDone' )
+            ]);
+            UtilWP::loadJS( 'goal', UtilPath::getJSPath( 'goal/Goal.min' ), ['jquery'] );
+            UtilWP::loadJS( 'goalInit', UtilPath::getJSPath( 'goal/init.min' ), ['jquery'] );
+        }
     }
 
     public function loadCSS()
     {
-	    wp_register_style( 'dinet_goal_css', plugin_dir_url( __FILE__ ) . '../../ressources/css/goal.css' );
+	    wp_register_style( 'dinet_goal_css', plugin_dir_url( __FILE__ ) . '../../ressources/css/goal.min.css' );
 	    wp_enqueue_style( 'dinet_goal_css' );
     }
 
@@ -45,9 +50,9 @@ class UI
     {
         $this->goal->getGoal()->setUserId(isset( $userId ) ? $userId : get_current_user_id() );
 
-        $goals = $this->goal->getRepository()->getAll( $_GET['patient_id'] );
+        $goals = $this->goal->getRepository()->getAll( $this->goal->getGoal()->getUserId() );
 
-        $display['addGoal'] = true;
+        $display['addGoal'] = current_user_can( 'administrator' );
 
         include UtilPath::getViewsPath('goal/goal' );
     }
