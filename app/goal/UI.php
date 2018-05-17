@@ -18,6 +18,8 @@ class UI
     {
         $this->goal = new GoalCtrl();
 
+
+
         add_action( 'init', array( $this, 'loadJS' ) );
         add_action( 'init', array( $this, 'loadCSS' ) );
         add_action( 'wp_ajax_goalSaveRequest', array( $this->goal, 'saveRequest' ) );
@@ -26,13 +28,16 @@ class UI
 
     public function loadJS()
     {
-	    UtilWP::loadJS( 'goalSelector', UtilPath::getJSPath( 'goal/Selector.min' ), ['jquery'] );
-	    UtilWP::loadJS( 'goalAjax', UtilPath::getJSPath( 'goal/Ajax.min' ), ['jquery'], [
-		    'nonceNewGoal' => wp_create_nonce( 'nonceNewGoal' ),
-		    'nonceSetGoalDone' => wp_create_nonce( 'nonceSetGoalDone' )
-	    ]);
-	    UtilWP::loadJS( 'goal', UtilPath::getJSPath( 'goal/Goal.min' ), ['jquery'] );
-	    UtilWP::loadJS( 'goalInit', UtilPath::getJSPath( 'goal/init.min' ), ['jquery'] );
+        if( current_user_can( 'administrator' ) )
+        {
+            UtilWP::loadJS( 'goalSelector', UtilPath::getJSPath( 'goal/Selector.min' ), ['jquery'] );
+            UtilWP::loadJS( 'goalAjax', UtilPath::getJSPath( 'goal/Ajax.min' ), ['jquery'], [
+                'nonceNewGoal' => wp_create_nonce( 'nonceNewGoal' ),
+                'nonceSetGoalDone' => wp_create_nonce( 'nonceSetGoalDone' )
+            ]);
+            UtilWP::loadJS( 'goal', UtilPath::getJSPath( 'goal/Goal.min' ), ['jquery'] );
+            UtilWP::loadJS( 'goalInit', UtilPath::getJSPath( 'goal/init.min' ), ['jquery'] );
+        }
     }
 
     public function loadCSS()
@@ -45,9 +50,9 @@ class UI
     {
         $this->goal->getGoal()->setUserId(isset( $userId ) ? $userId : get_current_user_id() );
 
-        $goals = $this->goal->getRepository()->getAll( $_GET['patient_id'] );
+        $goals = $this->goal->getRepository()->getAll( $this->goal->getGoal()->getUserId() );
 
-        $display['addGoal'] = true;
+        $display['addGoal'] = current_user_can( 'administrator' );
 
         include UtilPath::getViewsPath('goal/goal' );
     }

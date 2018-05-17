@@ -79,12 +79,18 @@ class UI
             }
         }
 
-		$display = [
+        $display = [
             'hungryLevel'   => false,
 		    'feelingBefore' => false,
             'feelingAfter'  => false,
         ];
 
-		include UtilPath::getTemplatesPath( 'monitoring' );
+        if( Dinet::$setting->getSetting( SettingsEnum::GOAL, SettingsEnum::ACTIVATE ) )
+        {
+            $Goal = new \Dinet\Goal\UI();
+            $display['goal'] = true; //$PatientCtrl->getSettings()->getSetting( SettingsEnum::GOAL, SettingsEnum::ACTIVATE );
+        }
+
+        include UtilPath::getTemplatesPath( 'monitoring' );
 	}
 }

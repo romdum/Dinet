@@ -2,6 +2,8 @@
 /**
  * @var \Dinet\Chart $Chart
  * @var \Dinet\Patient\PatientCtrl $PatientCtrl
+ * @var \Dinet\Goal\UI $Goal
+ * @var array $display
  */
 
 use Dinet\Dinet;
@@ -22,6 +24,10 @@ use Dinet\UtilPath;
         <?php if( $PatientCtrl->settings->getSetting( SettingsEnum::MONITORING, SettingsEnum::DISPLAY, SettingsEnum::BMI ) ): ?>
             <?php include UtilPath::getViewsPath( 'bmi' ); ?>
         <?php endif; ?>
+    <?php endif; ?>
+
+    <?php if( @$display['goal'] ): ?>
+        <?php $Goal->displayGoals( $PatientCtrl->getPatient()->getUserId() ) ?>
     <?php endif; ?>
 
     <?php include UtilPath::getViewsPath( 'monitoring/formInfo' ); ?>
