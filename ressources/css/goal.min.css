@@ -1,0 +1,1 @@
+#goalList li{display:flex;align-items:center;font-size:1.1rem;cursor:pointer}#goalList li.goalDone{color:#0085ba;text-decoration:line-through}#goalList li svg{margin-right:.5rem}

@@ -26,18 +26,18 @@ class UI
 
     public function loadJS()
     {
-	    UtilWP::loadJS( 'goalSelector', UtilPath::getJSPath( 'goal/Selector' ), ['jquery'] );
-	    UtilWP::loadJS( 'goalAjax', UtilPath::getJSPath( 'goal/Ajax' ), ['jquery'], [
+	    UtilWP::loadJS( 'goalSelector', UtilPath::getJSPath( 'goal/Selector.min' ), ['jquery'] );
+	    UtilWP::loadJS( 'goalAjax', UtilPath::getJSPath( 'goal/Ajax.min' ), ['jquery'], [
 		    'nonceNewGoal' => wp_create_nonce( 'nonceNewGoal' ),
 		    'nonceSetGoalDone' => wp_create_nonce( 'nonceSetGoalDone' )
 	    ]);
-	    UtilWP::loadJS( 'goal', UtilPath::getJSPath( 'goal/Goal' ), ['jquery'] );
-	    UtilWP::loadJS( 'goalInit', UtilPath::getJSPath( 'goal/init' ), ['jquery'] );
+	    UtilWP::loadJS( 'goal', UtilPath::getJSPath( 'goal/Goal.min' ), ['jquery'] );
+	    UtilWP::loadJS( 'goalInit', UtilPath::getJSPath( 'goal/init.min' ), ['jquery'] );
     }
 
     public function loadCSS()
     {
-	    wp_register_style( 'dinet_goal_css', plugin_dir_url( __FILE__ ) . '../../ressources/css/goal.css' );
+	    wp_register_style( 'dinet_goal_css', plugin_dir_url( __FILE__ ) . '../../ressources/css/goal.min.css' );
 	    wp_enqueue_style( 'dinet_goal_css' );
     }
 
