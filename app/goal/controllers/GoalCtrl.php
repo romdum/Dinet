@@ -16,7 +16,6 @@ class GoalCtrl
     private function setGoalFromArray( array $data )
     {
         $this->goal = ( new Goal() )
-//            ->setId( $data['goalId'] )
             ->setDate( $data['goalDate'] )
             ->setDone( $data['goalDone'] )
             ->setDescription( $data['goalDescription'] )
