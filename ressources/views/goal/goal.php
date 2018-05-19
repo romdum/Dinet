@@ -15,7 +15,7 @@
         <input type="button" value="Ajouter" class="button button-primary" id="addGoalBtn">
         <input type="hidden" value="<?= $_GET['patient_id'] ?>" id="patient_id">
     <?php endif; ?>
-    <ul id="goalList">
+    <ul id="goalList" style="<?= @$_GET['page'] === 'dinet_patient_record' ? 'max-height: 340px' : '' ?>">
         <?php foreach( $goals as $goal ): ?>
             <?php include \Dinet\UtilPath::getViewsPath('goal/goalItemList' ); ?>
         <?php endforeach; ?>

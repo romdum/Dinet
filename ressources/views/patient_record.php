@@ -33,7 +33,7 @@
             <label for="phone">Téléphone :</label>
             <input id="phone" type="text" name="Phone" value="<?= $PatientCtrl->getPatient()->getPhone() ?>">
         </div>
-        <div class="patient_record_form_group">
+        <div class="patient_record_form_group" style="display: flex;">
             <label for="obs">Observations :</label>
             <textarea id="obs" form="patient_form" name="Observation"><?= $PatientCtrl->getPatient()->getObservation() ?></textarea>
         </div>
