@@ -2,6 +2,7 @@
 
 namespace Dinet;
 
+use Dinet\Consultation\Repository\ConsultationRepository;
 use Dinet\Goal\UI as GoalUI;
 use Dinet\Monitoring\Citation;
 use Dinet\Monitoring\ConsumptionListCtrl;
@@ -85,6 +86,8 @@ class UI
         $PatientCtrl->load();
 
 		$nonceName = self::JS_SAVE_PATIENT_NONCE;
+
+		$consultations = (new ConsultationRepository())->findByPatientId($PatientCtrl->getPatient()->getUserId());
 
 		$Chart = new WeightHistoryChart();
 		$Chart->setPatientCtrl( $PatientCtrl );

@@ -1,14 +1,9 @@
 <?php
 
-namespace Dinet\Consultation;
+namespace Dinet\Consultation\Controller;
 
-class PostType
+class PostTypeCtrl
 {
-	public function __construct()
-	{
-		add_action( 'init', array( $this, 'addConsultationPostType' ) );
-	}
-
 	public function addConsultationPostType()
 	{
 		register_post_type( 'consultation',
@@ -27,6 +22,7 @@ class PostType
 				],
 				'capability_type' => 'post',
 				'supports' => [
+					'title',
 					'editor',
 				],
 				'public' => true,

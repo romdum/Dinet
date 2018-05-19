@@ -12,11 +12,10 @@
 
 namespace Dinet;
 
-use Dinet\Consultation\Consultation;
+use Dinet\Consultation\ConsultationModule;
 use Dinet\Monitoring\Monitoring;
 use Dinet\Patient\Patient;
 use Dinet\Patient\PatientCtrl;
-use Goal;
 
 require_once plugin_dir_path( __FILE__ ) . 'app/main/utils/UtilPath.php';
 require_once UtilPath::getUtilsPath( 'Util' );
@@ -52,8 +51,8 @@ class Dinet
 
         if( self::$setting->getSetting( SettingsEnum::CONSULTATION, SettingsEnum::ACTIVATE ) )
         {
-            require_once UtilPath::getConsultationPath('Consultation' );
-            $Consultation = new Consultation();
+            require_once UtilPath::getConsultationPath('ConsultationModule' );
+            $Consultation = new ConsultationModule();
             $Consultation->load();
         }
 

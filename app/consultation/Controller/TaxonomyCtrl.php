@@ -1,14 +1,9 @@
 <?php
 
-namespace Dinet\Consultation;
+namespace Dinet\Consultation\Controller;
 
-class Taxonomy
+class TaxonomyCtrl
 {
-	public function __construct()
-	{
-		add_action( 'init', array( $this, 'addTaxonomyToConsultation' ) );
-	}
-
 	public function addTaxonomyToConsultation()
 	{
 		register_taxonomy( 'consultation_type', 'consultation', [
