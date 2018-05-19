@@ -5,7 +5,8 @@
  * @var \Dinet\Goal\Goal $goal
  */
 ?>
-<section class="goal">
+
+<section class="goal" style="<?= @$_GET['page'] === 'dinet_patient_record' ? 'margin-bottom: 1rem;' : '' ?>">
     <header>
         <h2>Objectifs</h2>
     </header>
