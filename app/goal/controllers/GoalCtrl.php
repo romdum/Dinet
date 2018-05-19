@@ -19,7 +19,7 @@ class GoalCtrl
             ->setDate( $data['goalDate'] )
             ->setDone( $data['goalDone'] )
             ->setDescription( $data['goalDescription'] )
-            ->setUserId( $data['goalUserId'] );
+            ->setUserId( (int) $data['goalUserId'] );
 
         if( isset( $data['goalId'] ) )
         {
