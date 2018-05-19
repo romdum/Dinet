@@ -19,10 +19,11 @@ let Goal = (function()
     let toggleCheck = function($obj, isDone, icon)
     {
         if( isDone ){
-            $obj.addClass('goalDone');
+            $obj.find('.goalDescription').addClass('goalDoneDescription');
         } else {
-            $obj.removeClass('goalDone');
+            $obj.find('.goalDescription').removeClass('goalDoneDescription');
         }
+        $obj.toggleClass('goalDone');
         $obj.find('svg').remove();
         $obj.prepend(icon)
             .find('svg')

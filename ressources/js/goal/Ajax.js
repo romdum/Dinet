@@ -23,7 +23,7 @@ let GoalAjax = (function()
             nonce           : utilGoalAjax.nonceNewGoal,
             goalDescription : GoalSelector.getNewGoalInput().val(),
             goalDone        : 0,
-            goalDate        : "02/04/2018",
+            goalDate        : getDate(),
             goalUserId      : parseInt(GoalSelector.getPatientId().val())
         };
 
@@ -32,6 +32,18 @@ let GoalAjax = (function()
             dataType: "json",
             data    : data
         });
+    };
+
+    let getDate = function()
+    {
+        let d = new Date();
+
+        let month = d.getMonth()+1;
+        let day = d.getDate();
+
+        return (day<10 ? '0' : '') + day + '/' +
+            (month<10 ? '0' : '') + month + '/' +
+            d.getFullYear();
     };
 
     return {

@@ -4,6 +4,15 @@ let GoalSelector = (function(){
     let $goalList;
     let $patientId;
     let $addGoalBtn;
+    let $goalDescription;
+
+    let getGoalDescription = function()
+    {
+        if( typeof $goalDescription === 'undefined' ){
+            $goalDescription = jQuery('.goalDescription');
+        }
+        return $goalDescription;
+    };
 
     let getNewGoalInput = function()
     {
@@ -41,6 +50,7 @@ let GoalSelector = (function(){
         getNewGoalInput: getNewGoalInput,
         getGoalList: getGoalList,
         getAddGoalBtn: getAddGoalBtn,
-        getPatientId: getPatientId
+        getPatientId: getPatientId,
+        getGoalDescription: getGoalDescription
     }
 })();

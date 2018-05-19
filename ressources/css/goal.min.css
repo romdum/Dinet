@@ -1,1 +1,1 @@
-#goalList li{display:flex;align-items:center;font-size:1.1rem;cursor:pointer}#goalList li.goalDone{color:#0085ba;text-decoration:line-through}#goalList li svg{margin-right:.5rem}
+#goalList{overflow-y:scroll;max-height:340px}#goalList li{display:flex;align-items:center;font-size:1.1rem;cursor:pointer;position:relative}#goalList li.goalDone{color:#0085ba}.goalDoneDescription{text-decoration-line:line-through}#goalList li svg{margin-right:.5rem}.goalDate{background-color:#444;color:#FFF;border-radius:10px;padding:.5rem 1rem;position:absolute;right:0}
