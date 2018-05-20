@@ -7,11 +7,15 @@ use Dinet\Dinet;
 class PatientRepository
 {
 	const AUTO_SAVE = [
-		Dinet::SLUG . 'Observation' => 'Observation',
-		Dinet::SLUG . 'Phone'       => 'Phone',
-		Dinet::SLUG . 'Height'      => 'Height',
-		'first_name'                => 'FirstName',
-		'last_name'                 => 'LastName',
+		Dinet::SLUG . 'Observation'     => 'Observation',
+		Dinet::SLUG . 'Phone'           => 'Phone',
+		Dinet::SLUG . 'Height'          => 'Height',
+		'first_name'                    => 'FirstName',
+		'last_name'                     => 'LastName',
+		Dinet::SLUG . 'Job'             => 'Job',
+		Dinet::SLUG . 'DateOfBirth'     => 'DateOfBirth',
+		Dinet::SLUG . 'FamilialHistory' => 'FamilialHistory',
+		Dinet::SLUG . 'MedicalHistory'  => 'MedicalHistory',
 	];
 
 	public function save( Patient $patient )

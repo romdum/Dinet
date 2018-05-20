@@ -15,11 +15,15 @@ require_once UtilPath::getPatientPath( 'PatientSettings' );
 class PatientCtrl
 {
 	const AUTO_LOAD = [
-		Dinet::SLUG . 'Observation' => 'Observation',
-		Dinet::SLUG . 'Phone'       => 'Phone',
-		Dinet::SLUG . 'Height'      => 'Height',
-		'first_name'                => 'FirstName',
-		'last_name'                 => 'LastName',
+		Dinet::SLUG . 'Observation'     => 'Observation',
+		Dinet::SLUG . 'Phone'           => 'Phone',
+		Dinet::SLUG . 'Height'          => 'Height',
+		'first_name'                    => 'FirstName',
+		'last_name'                     => 'LastName',
+        Dinet::SLUG . 'Job'             => 'Job',
+        Dinet::SLUG . 'DateOfBirth'     => 'DateOfBirth',
+        Dinet::SLUG . 'FamilialHistory' => 'FamilialHistory',
+        Dinet::SLUG . 'MedicalHistory'  => 'MedicalHistory',
 	];
 
 	/** @var Patient */
@@ -68,7 +72,11 @@ class PatientCtrl
 	        ->setHeight( $this->reformatHeight( $_POST['Height'] ) )
 	        ->setObservation( $_POST['Observation'] )
 	        ->setPhone( $_POST['Phone'] )
-	        ->setWeight( ( new Weight() )->setValue( $_POST['Weight'] )->setTimestamp( time() ) );
+	        ->setWeight( ( new Weight() )->setValue( $_POST['Weight'] )->setTimestamp( time() ) )
+            ->setJob( $_POST['Job'] )
+            ->setDateOfBirth( $_POST['DateOfBirth'] )
+            ->setMedicalHistory( $_POST['MedicalHistory'] )
+            ->setFamilialHistory( $_POST['FamilialHistory'] );
 
         $this->getRepository()->save( $this->Patient );
         $this->load();

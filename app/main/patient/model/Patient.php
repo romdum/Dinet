@@ -4,40 +4,49 @@ namespace Dinet\Patient;
 
 class Patient
 {
-	/**
-	 * @var int
-	 */
+	/** @var int */
     private $userId;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $firstName;
 
-    /**
-     * @var string
-     */
+    /** @var string */
 	private $lastName;
 
-    /**
-     * @var Weight
-     */
+    /** @var Weight */
     private $weight;
 
-    /**
-     * @var float
-     */
+    /** @var float */
     private $height;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $phone;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $observation;
+
+    /** @var string */
+    private $dateOfBirth;
+
+    /** @var string */
+    private $job;
+
+    /** @var string */
+    private $medicalHistory;
+
+    /** @var string */
+    private $familialHistory;
+
+    public function getMedicalHistory(): string
+    {
+        return $this->medicalHistory ?: '';
+    }
+
+
+    public function getFamilialHistory(): string
+    {
+        return $this->familialHistory ?: '';
+    }
 
     public function __construct( $userId = null )
     {
@@ -89,6 +98,16 @@ class Patient
 	    return isset( $this->phone ) ? $this->phone : '';
     }
 
+    public function getDateOfBirth(): string
+    {
+        return $this->dateOfBirth ?: '';
+    }
+
+    public function getJob(): string
+    {
+        return $this->job ?: '';
+    }
+
 	public function setFirstName( ?string $firstName ): Patient
 	{
 		$this->firstName = $firstName;
@@ -124,4 +143,28 @@ class Patient
 		$this->observation = $observation;
 		return $this;
 	}
+
+    public function setDateOfBirth( string $dateOfBirth ): Patient
+    {
+        $this->dateOfBirth = $dateOfBirth;
+        return $this;
+    }
+
+    public function setJob( string $job ): Patient
+    {
+        $this->job = $job;
+        return $this;
+    }
+
+    public function setMedicalHistory( string $medicalHistory ): Patient
+    {
+        $this->medicalHistory = $medicalHistory;
+        return $this;
+    }
+
+    public function setFamilialHistory( string $familialHistory ): Patient
+    {
+        $this->familialHistory = $familialHistory;
+        return $this;
+    }
 }

@@ -11,6 +11,7 @@ jQuery(document).ready(function($){
         checkValue('weight','[0-9]{1,3}[.]?[0-9]{0,}');
         checkValue('height','[0-9]{1,3}[.]?[0-9]{0,}');
         checkValue('phone','^[(+33)|0]{1}[1-9]{1}[ |.]?([0-9]{2}[ |.]?){4}$');
+        checkValue('job','[a-zA-Z]');
         if( $('.patient_record .inputError').length === 0 )
         {
             savePatientRecord();
@@ -31,6 +32,10 @@ jQuery(document).ready(function($){
             saveFormInfo();
         }
     });
+
+    $('#height, #weight').change(function(){
+        $('#bmi').val(calculBMI($('#height').val(),$('#weight').val()));
+    });
 });
 
 let savePatientRecord = function(){
@@ -38,16 +43,20 @@ let savePatientRecord = function(){
         url     : SavePatientRecordUtil.ajaxurl,
         dataType: "json",
         data    : {
-            action      : "ajaxSavePatient",
-            nonce       : SavePatientRecordUtil.nonce,
-            nonceName   : jQuery('#nonceName').val(),
-            patientId   : jQuery('#patientId').val(),
-            FirstName   : jQuery('#firstname').val(),
-            LastName    : jQuery('#lastname').val(),
-            Weight      : jQuery('#weight').val(),
-            Height      : jQuery('#height').val(),
-            Phone       : jQuery('#phone').val(),
-            Observation : jQuery('#obs').val()
+            action          : "ajaxSavePatient",
+            nonce           : SavePatientRecordUtil.nonce,
+            nonceName       : jQuery('#nonceName').val(),
+            patientId       : jQuery('#patientId').val(),
+            FirstName       : jQuery('#firstname').val(),
+            LastName        : jQuery('#lastname').val(),
+            Weight          : jQuery('#weight').val(),
+            Height          : jQuery('#height').val(),
+            Phone           : jQuery('#phone').val(),
+            Observation     : jQuery('#obs').val(),
+            Job             : jQuery('#job').val(),
+            DateOfBirth     : jQuery('#dob').val(),
+            FamilialHistory : jQuery('#familialHistory').val(),
+            MedicalHistory  : jQuery('#medicalHistory').val()
         },
         success : function (response)
         {
@@ -130,4 +139,9 @@ let formatPhone = function( separator = '' ){
             result += phone[i] + ( result.replace(new RegExp(separator,'g'),'').length % 2 ? separator : '' );
 
     $phone.val(result);
+};
+
+let calculBMI = function(height, weight)
+{
+    return Math.round(weight / (height * height) * 10 ) / 10;
 };
