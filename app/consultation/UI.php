@@ -20,7 +20,7 @@ class UI
 			__( 'Informations supplémentaires' ),
 			array( $this, 'displayDateMetabox' ),
 			'consultation',
-			'normal',
+			'side',
 			'default'
 		);
 	}

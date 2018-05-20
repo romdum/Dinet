@@ -207,8 +207,7 @@ body.toplevel_page_dinet_plugin section header h2 {
 }
 
 .patient_record{
-    margin-bottom: 1rem;
-    width: 550px;
+    min-width: 510px;
 }
 
 .patient_record_form_group label{
@@ -225,11 +224,8 @@ body.toplevel_page_dinet_plugin section header h2 {
 
 .patient_consultation{
     margin-bottom: 1rem;
-    flex: 2;
-}
-
-.goal{
     flex: 1;
+    flex-basis: calc(100% - 430px);
 }
 
 .goal input[type="text"]{
