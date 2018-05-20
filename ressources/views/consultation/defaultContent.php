@@ -1,4 +1,4 @@
-<table>
+<table class="table table-bordered">
     <tr>
         <th>Suivi poids et ressenti</th>
         <td style="min-width: 100px;"></td>

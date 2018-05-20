@@ -3,8 +3,10 @@
 namespace Dinet\Consultation;
 
 use Dinet\Consultation\Controller\ConsultationCtrl;
+use Dinet\Consultation\Controller\PdfGenerator;
 use Dinet\Consultation\Controller\PostTypeCtrl;
 use Dinet\Consultation\Controller\TaxonomyCtrl;
+use Dinet\UtilPath;
 
 require_once 'Controller/PostTypeCtrl.php';
 require_once 'Controller/TaxonomyCtrl.php';
