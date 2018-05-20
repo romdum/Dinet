@@ -27,6 +27,7 @@ class ConsultationModule
         add_filter( 'wp_insert_post_data', array( $ui, 'add_custom_title' ), 10, 2 );
         add_action( 'init', array( $ui, 'loadCSS' ) );
         add_filter( 'default_content', array( $ui, 'defaultContent' ), 10, 2 );
+        add_action( 'media_buttons', array( $ui, 'addDownloadBtn' ) );
 
         $postType = new PostTypeCtrl();
         add_action( 'init', array( $postType, 'addConsultationPostType' ), 10, 0 );
@@ -36,5 +37,6 @@ class ConsultationModule
 
         $consultation = new ConsultationCtrl();
         add_action( 'save_post', array( $consultation, 'save' ), 10, 2 );
+        add_filter( 'init', array( $consultation, 'generatePdf' ), 10, 0 );
     }
 }

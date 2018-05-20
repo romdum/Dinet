@@ -11,7 +11,7 @@ require_once UtilPath::getPluginPath( 'libs/dompdf/autoload.inc' );
 
 class PdfGenerator
 {
-    public function generate( string $html )
+    public function generate( string $html, string $filename = 'document.pdf' )
     {
         // instantiate and use the dompdf class
         $dompdf = new Dompdf();
@@ -23,7 +23,7 @@ class PdfGenerator
         $dompdf->setOptions( $dompdfOptions );
         $dompdf->setCss( $dompdfCss );
 
-        $dompdf->loadHtml($html);
+        $dompdf->loadHtml( self::cleanContent( $html ) );
 
         // (Optional) Setup the paper size and orientation
         $dompdf->setPaper('A4' );
@@ -32,7 +32,13 @@ class PdfGenerator
         $dompdf->render();
 
         // Output the generated PDF to Browser
-        $dompdf->stream( 'consultation');
+        $dompdf->stream( $filename );
+    }
+
+    public static function cleanContent($html)
+    {
+        $html = str_replace( '&nbsp;', '<br>', $html);
+        return $html;
     }
 
 }

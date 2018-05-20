@@ -29,6 +29,7 @@ class UI
 	{
 		$start = get_metadata( 'post', $post->ID, 'dinet_consultation_start', true);
 		include UtilPath::getViewsPath( 'consultation/dateMetabox' );
+        $patientId = get_metadata( 'post', $post->ID, 'dinet_consultation_patient_id', true);
         include UtilPath::getViewsPath( 'consultation/patientMetabox' );
 	}
 
@@ -50,5 +51,14 @@ class UI
             $content = ob_get_clean();
         }
         return $content;
+    }
+
+    public function addDownloadBtn()
+    {
+        global $post;
+        if( $post->post_type === 'consultation' )
+        {
+            echo '<a href="?post=' . $post->ID . '&action=edit&download=1" class="button">Télécharger</a>';
+        }
     }
 }

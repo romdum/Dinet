@@ -22,7 +22,11 @@
                 <tr>
                     <td><?= $consultation->getDate() ?></td>
                     <td><a href="<?= get_edit_post_link( $consultation->getId() ) ?>"><?= $consultation->getTitle() ?></a></td>
-                    <td class="alignright"><span class="dashicons dashicons-download"></span></td>
+                    <td class="alignright">
+                        <a href="<?= get_edit_post_link( $consultation->getId() ) ?>&download=1">
+                            <span class="dashicons dashicons-download"></span>
+                        </a>
+                    </td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
