@@ -1,0 +1,1 @@
+.patient_consultation header{display:flex;align-items:center}.patient_consultation>header>a.button.button-primary{margin-left:1rem}.extraInfoConsultation{margin:.5rem 0;display:flex;justify-content:space-between;align-items:center}.extraInfoConsultation input,.extraInfoConsultation select{width:calc(100% - 60px);height:28px}

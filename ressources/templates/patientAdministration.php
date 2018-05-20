@@ -20,7 +20,7 @@ use Dinet\UtilPath;
         <?php endif; ?>
 
         <?php if( Dinet::$setting->getSetting( SettingsEnum::CONSULTATION, SettingsEnum::ACTIVATE ) ): ?>
-            <?php include UtilPath::getViewsPath( 'admin/patient_consultation' ); ?>
+            <?php include UtilPath::getViewsPath( 'consultation/patient_consultation' ); ?>
         <?php endif; ?>
     </div>
 

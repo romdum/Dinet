@@ -97,4 +97,9 @@ class UtilPath
     {
         return self::buildPath( '../../goal/', $file, $ext, $type );
     }
+
+    public static function getCssPath( string $file = '', string $ext = 'css', string $type = self::TYPE_URL )
+    {
+        return self::buildPath( '../../../ressources/css/', $file, $ext, $type );
+    }
 }

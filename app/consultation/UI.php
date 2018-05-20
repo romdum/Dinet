@@ -2,29 +2,23 @@
 
 namespace Dinet\Consultation;
 
+use Dinet\Util;
+use Dinet\UtilPath;
+
 class UI
 {
-	public function __construct()
-	{
-		add_action( 'add_meta_boxes', array( $this, 'addCustomFields' ), 10, 0 );
-
-		add_filter( 'wp_insert_post_data', array( $this, 'add_custom_title' ), 10, 2 );
-	}
+    public function loadCss()
+    {
+        wp_register_style( 'dinet_consultation_css', UtilPath::getCssPath( 'consultation.min' ) );
+        wp_enqueue_style( 'dinet_consultation_css' );
+    }
 
 	public function addCustomFields()
 	{
 		add_meta_box(
-			'consultationDate',
-			'Date et heure',
+			'consultationExtraInfo',
+			__( 'Informations supplémentaires' ),
 			array( $this, 'displayDateMetabox' ),
-			'consultation',
-			'normal',
-			'default'
-		);
-		add_meta_box(
-			'consultationPatient',
-			'Patient',
-			array( $this, 'displayPatientMetabox' ),
 			'consultation',
 			'normal',
 			'default'
@@ -34,21 +28,37 @@ class UI
 	public function displayDateMetabox( $post, $metabox )
 	{
 		$start = get_metadata( 'post', $post->ID, 'dinet_consultation_start', true);
-		$end = get_metadata( 'post', $post->ID, 'dinet_consultation_end', true);
-		include '../ressources/views/admin/dateMetabox.php';
-	}
-
-	public function displayPatientMetabox( $post, $metabox )
-	{
-		include '../ressources/views/admin/patientMetabox.php';
+		include UtilPath::getViewsPath( 'consultation/dateMetabox' );
+        $patientId = get_metadata( 'post', $post->ID, 'dinet_consultation_patient_id', true);
+        include UtilPath::getViewsPath( 'consultation/patientMetabox' );
 	}
 
 	public function add_custom_title( $data, $postarr )
-	{
-		if( $data['post_type'] === 'consultation' )
-		{
-			$data['post_title'] = 'Consultation';
-		}
-		return $data;
-	}
+    {
+        if( $data['post_type'] === 'consultation' && $data['post_title'] === '' )
+        {
+            $data['post_title'] = 'Consultation du ' . date( 'd/m/Y');
+        }
+        return $data;
+    }
+
+    public function defaultContent( $content, $post)
+    {
+        if( $post->post_type === 'consultation')
+        {
+            ob_start();
+            include UtilPath::getViewsPath( 'consultation/defaultContent' );
+            $content = ob_get_clean();
+        }
+        return $content;
+    }
+
+    public function addDownloadBtn()
+    {
+        global $post;
+        if( $post->post_type === 'consultation' )
+        {
+            echo '<a href="?post=' . $post->ID . '&action=edit&download=1" class="button">Télécharger</a>';
+        }
+    }
 }
