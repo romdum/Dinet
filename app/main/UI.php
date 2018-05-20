@@ -87,7 +87,10 @@ class UI
 
 		$nonceName = self::JS_SAVE_PATIENT_NONCE;
 
-		$consultations = (new ConsultationRepository())->findByPatientId($PatientCtrl->getPatient()->getUserId());
+        if( Dinet::$setting->getSetting( SettingsEnum::CONSULTATION, SettingsEnum::ACTIVATE ) )
+        {
+            $consultations = (new ConsultationRepository())->findByPatientId($PatientCtrl->getPatient()->getUserId());
+        }
 
 		$Chart = new WeightHistoryChart();
 		$Chart->setPatientCtrl( $PatientCtrl );
