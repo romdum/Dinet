@@ -19,3 +19,7 @@
     width: calc(100% - 60px);
     height: 28px;
 }
+
+.patient_consultation{
+    min-width: 320px;
+}

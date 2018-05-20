@@ -34,7 +34,7 @@
             <input id="phone" type="text" name="Phone" value="<?= $PatientCtrl->getPatient()->getPhone() ?>">
         </div>
         <div class="patient_record_form_group" style="display: flex;">
-            <label for="obs">Observations :</label>
+            <label for="obs">Observations :</label>&nbsp;
             <textarea id="obs" form="patient_form" name="Observation"><?= $PatientCtrl->getPatient()->getObservation() ?></textarea>
         </div>
         <input type="button" id="patientFormSubmit" class="button button-primary" value="Enregistrer">
