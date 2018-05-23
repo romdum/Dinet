@@ -1,24 +1,11 @@
-<?php
-use Dinet\Dinet;
-use Dinet\SettingsEnum;
-use Dinet\UtilPath;
-
-/** @var \Dinet\Patient\PatientCtrl $PatientCtrl */
-?>
-
-<?php include UtilPath::getViewsPath( 'header' ); ?>
-    <main>
-        <?php if ( Dinet::$setting->getSetting( SettingsEnum::MONITORING, SettingsEnum::DISPLAY, SettingsEnum::CHART ) ): ?>
-            <?php if( $PatientCtrl->settings->getSetting( SettingsEnum::MONITORING, SettingsEnum::DISPLAY, SettingsEnum::CHART ) ): ?>
-
-            <?php endif; ?>
-        <?php endif; ?>
-
-        <?php if ( Dinet::$setting->getSetting( SettingsEnum::MONITORING, SettingsEnum::DISPLAY, SettingsEnum::BMI ) ): ?>
-            <?php if( $PatientCtrl->settings->getSetting( SettingsEnum::MONITORING, SettingsEnum::DISPLAY, SettingsEnum::BMI ) ): ?>
-
-            <?php endif; ?>
-        <?php endif; ?>
-
-    </main>
-<?php include UtilPath::getViewsPath('toast' ) ?>
+<div class="wrap">
+    <h1>Paramètre du patient <?= $this->PatientCtrl->getPatient()->getFirstName() . ' ' . $this->PatientCtrl->getPatient()->getLastName() ?></h1>
+    <form method="post" action="<?= admin_url( 'admin-post.php' ) ?>">
+        <?php $this->displaySettings( $this->PatientCtrl->getSettings()->getSetting() ); ?>
+        <div class="form-group">
+            <input type="hidden" name="action" value="patientSettingsSave">
+            <input type="hidden" name="patient_id" value="<?= $this->PatientCtrl->getPatient()->getUserId() ?>">
+            <input type="submit" value="Enregistrer" class="button button-primary">
+        </div>
+    </form>
+</div>

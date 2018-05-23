@@ -253,6 +253,14 @@ body.toplevel_page_dinet_plugin section header h2 {
     border: none !important;
 }
 
+.settingLabel{
+    display: inline-block;
+    min-width: 100px;
+}
+
+.form-group{
+    margin-bottom: 0.5rem;
+}
 
 /* Responsive table ajout de consommation */
 @media all and (max-width: 782px) {

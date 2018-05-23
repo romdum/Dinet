@@ -4,6 +4,7 @@ namespace Dinet\Patient;
 
 use Dinet\SettingsEnum;
 use Dinet\UtilPath;
+use Dompdf\Exception;
 
 require_once UtilPath::getPatientPath( 'controller/PatientCtrl' );
 require_once UtilPath::getPatientPath( 'model/Patient' );
@@ -21,8 +22,6 @@ class PatientSettingsUI
     {
         if( isset( $_GET['patient_id'] ) )
         {
-            add_action( 'admin_init', array( $this, 'page_init' ) );
-
             $this->PatientCtrl = new PatientCtrl();
             $this->PatientCtrl->setPatient( new Patient( $_GET['patient_id'] ) );
             $this->PatientCtrl->load();
@@ -30,97 +29,48 @@ class PatientSettingsUI
     }
 
     /**
-     * Options page callback
-     */
-    public function createSettingsPage()
-    {
-        ?>
-        <div class="wrap">
-            <h1>Paramètre du patient <?= $this->PatientCtrl->getPatient()->getFirstName() . ' ' . $this->PatientCtrl->getPatient()->getLastName() ?></h1>
-            <form method="post" action="options.php">
-                <?php
-                settings_fields( PatientSettings::NAME );
-                do_settings_sections( 'dinet_patient_settings' );
-                submit_button();
-                ?>
-            </form>
-        </div>
-        <?php
-    }
-
-    /**
      * Register and add settings
      */
-    public function page_init()
+    public function pageInit()
     {
-        register_setting(
-            PatientSettings::NAME, // Option group
-            $this->PatientCtrl->getSettings()->getOptionName(), // Option name
-            array( $this, 'sanitize' ) // Sanitize
-        );
-
-        add_settings_section(
-            'monitoring', // ID
-            'Suivi nutritionnel', // Title
-            null, // Callback
-            'dinet_patient_settings' // Page
-        );
-
-        add_settings_field(
-            'monitorin_activate', // ID
-            'Activer', // Title
-            array( $this, 'id_number_callback' ), // Callback
-            'dinet_patient_settings', // Page
-            'monitoring' // Section
-        );
-
-        add_settings_field(
-            'title',
-            'Title',
-            array( $this, 'title_callback' ),
-            'dinet_patient_settings',
-            'monitoring'
-        );
+        include UtilPath::getTemplatesPath( 'patientSettings' );
     }
 
-    /**
-     * Sanitize each setting field as needed
-     *
-     * @param array $input Contains all settings fields as array keys
-     * @return array
-     */
-    public function sanitize( $input )
+    private function displaySettings( $settings, $key = '', $level = 2 )
     {
-        $new_input = array();
-        var_dump(' '.$input);
-        if( isset( $input['Monitoring']['activate'] ) )
-            $new_input['Monitoring']['activate'] = $input['Monitoring']['activate'];
-
-        if( isset( $input['title'] ) )
-            $new_input['title'] = sanitize_text_field( $input['title'] );
-
-        return $new_input;
+        foreach( $settings as $label => $setting )
+        {
+            if( method_exists( $this, 'get' . ucfirst( gettype( $setting ) ) . 'Field' ) )
+            {
+                $this->{'get' . ucfirst( gettype( $setting ) ) . 'Field'}( $setting, ucfirst( $label ), $key . '{' . $label . '}', $level );
+            }
+        }
     }
 
-    /**
-     * Get the settings option array and print one of its values
-     */
-    public function id_number_callback()
+    protected function getBooleanField( $setting, $label, $key )
     {
-        printf(
-            '<input type="checkbox" id="id_number" name="'. $this->PatientCtrl->getSettings()->getOptionName() .'[Monitoring][activate]" %s />',
-            $this->PatientCtrl->getSettings()->getSetting( SettingsEnum::MONITORING, SettingsEnum::ACTIVATE ) ? 'checked' : ''
-        );
+        include UtilPath::getViewsPath( 'settings/booleanField' );
     }
 
-    /**
-     * Get the settings option array and print one of its values
-     */
-    public function title_callback()
+    protected function getArrayField( $setting, $label, $key, $level )
     {
-        printf(
-            '<input type="text" id="title" name="my_option_name[title]" value="%s" />',
-            isset( $this->options['title'] ) ? esc_attr( $this->options['title']) : ''
-        );
+        echo '<h' . $level . '>' .  ucfirst( $label ) . '</h' . $level . '>';
+        $this->displaySettings( $setting, $key, $level + 1 );
+    }
+
+    protected function getStringField( $setting, $label, $key )
+    {
+        echo '<label>' . $key . '</label>';
+        echo '<input type="text" value="' . $setting. '">';
+    }
+
+    public function patientSettingsSave()
+    {
+        // TODO implement this method
+        // create array like default settings from POST
+        // compare with default settings
+        // add if necessary default settings
+        // save PatientSettings::setSettings
+        wp_redirect( admin_url( 'admin.php?page=dinet_patient_settings&patient_id=' . $_POST['patient_id'] ) );
     }
 }
