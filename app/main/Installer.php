@@ -132,17 +132,4 @@ class Installer
     {
         return $GLOBALS['wpdb']->get_var( "SELECT COUNT(1) FROM {$GLOBALS['wpdb']->options} WHERE option_name = 'dinet'" ) > 0;
     }
-
-    public static function upgrade()
-    {
-    	global $wpdb;
-	    $dbVersion = $wpdb->get_var( "SELECT COUNT(1) FROM {$wpdb->options} WHERE option_name = 'dinet'" ) > 0;
-
-	    if( $dbVersion !== Dinet::DB_VERSION )
-	    {
-		    update_option( 'dinet', Dinet::DB_VERSION );
-
-		    // run here sql if database structure change
-	    }
-    }
 }

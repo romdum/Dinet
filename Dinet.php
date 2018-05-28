@@ -13,6 +13,7 @@
 namespace Dinet;
 
 use Dinet\Consultation\ConsultationModule;
+use Dinet\Migration\Migration;
 use Dinet\Monitoring\Monitoring;
 use Dinet\Patient\Patient;
 use Dinet\Patient\PatientCtrl;
@@ -27,6 +28,7 @@ require_once UtilPath::getMainPath( 'Settings' );
 require_once UtilPath::getMainPath( 'Crypt' );
 require_once UtilPath::getMainPath( 'SettingsEnum' );
 require_once UtilPath::getMainPath( 'Citation' );
+require_once UtilPath::getMainPath( 'migration/Migration' );
 require_once UtilPath::getPatientPath( 'model/Patient' );
 require_once UtilPath::getPatientPath( 'controller/PatientCtrl' );
 
@@ -34,7 +36,7 @@ class Dinet
 {
     const NAME = 'Dinet';
     const SLUG = 'dinet';
-    const DB_VERSION = '1.0';
+    const DB_VERSION = '2';
 
     /** @var string */
     public static $TABLE_FOOD, $TABLE_FOOD_USER;
@@ -45,6 +47,9 @@ class Dinet
     public function load() : void
     {
         Crypt::generateKey();
+        $migration = new Migration();
+        $migration->migrate();
+
         $this->loadStaticVar();
         $this->loadHook();
 
