@@ -24,6 +24,7 @@ require_once UtilPath::getUtilsPath( 'UtilWP' );
 require_once UtilPath::getMainPath( 'Installer' );
 require_once UtilPath::getMainPath( 'UI' );
 require_once UtilPath::getMainPath( 'Settings' );
+require_once UtilPath::getMainPath( 'Crypt' );
 require_once UtilPath::getMainPath( 'SettingsEnum' );
 require_once UtilPath::getMainPath( 'Citation' );
 require_once UtilPath::getPatientPath( 'model/Patient' );
@@ -43,6 +44,7 @@ class Dinet
 
     public function load() : void
     {
+        Crypt::generateKey();
         $this->loadStaticVar();
         $this->loadHook();
 
