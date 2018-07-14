@@ -81,14 +81,4 @@ class PatientCtrlTest extends WP_UnitTestCase
             [$weightHistory[2]->getTimeStamp() => $weightHistory[2]->getValue()],
         ]);
     }
-
-    /**
-     * @test
-     */
-    public function weightHistoryComplex()
-    {
-        $this->markTestIncomplete( 'weightHistory with complex value not implements yet.' );
-        // test with incorrect timestamp
-        // test with empty time => meta_key = dinetWeight_
-    }
 }
