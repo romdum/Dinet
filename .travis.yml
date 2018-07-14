@@ -26,23 +26,17 @@ test:
   username: root
   encoding: utf8
 
-env:
-  - WP_VERSION=latest
-  - DB_NAME=dinet-test
-  - DB_USER=root
-  - DB_PASSWORD=
-  - DB_HOST=localhost
-  - DB_CHARSET=utf8
-  - DB_COLLATE=
 
 matrix:
   include:
     - php: 7.1
+      env: WP_VERSION=latest DB_NAME=dinet-test DB_USER=root DB_PASSWORD= DB_HOST=localhost DB_CHARSET=utf8 DB_COLLATE=
     - php: 7.2
+      env: WP_VERSION=latest DB_NAME=dinet-test DB_USER=root DB_PASSWORD= DB_HOST=localhost DB_CHARSET=utf8 DB_COLLATE=
 
 before_install:
-  - mysql -e 'DROP DATABASE IF EXISTS test'
-  - mysql -e 'CREATE DATABASE IF EXISTS test'
+  - mysql -e 'DROP DATABASE IF EXISTS `dinet-test`;'
+  - mysql -e 'CREATE DATABASE IF EXISTS `dinet-test`;'
   - |
     CREATE TABLE `wptests_commentmeta` (
       `meta_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
