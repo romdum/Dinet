@@ -8,7 +8,9 @@ use Dinet\Util;
 use stdClass;
 use \WP_UnitTestCase;
 
+require_once getenv( 'WP_DEVELOP_DIR' ) . 'src/wp-content/plugins/dinet/Dinet.php';
 require_once getenv( 'WP_DEVELOP_DIR' ) . 'src/wp-content/plugins/dinet/app/main/Settings.php';
+require_once getenv( 'WP_DEVELOP_DIR' ) . 'src/wp-content/plugins/dinet/app/main/SettingsEnum.php';
 require_once getenv( 'WP_DEVELOP_DIR' ) . 'src/wp-content/plugins/dinet/app/main/utils/Util.php';
 
 class SettingsTest extends WP_UnitTestCase
@@ -31,7 +33,8 @@ class SettingsTest extends WP_UnitTestCase
 	 */
 	public function createDefaultOption()
 	{
-		$this->assertTrue( $this->settings->getSetting( SettingsEnum::MONITORING, SettingsEnum::ACTIVATE ),
+        $settings = $this->settings->getSetting( SettingsEnum::MONITORING, SettingsEnum::ACTIVATE );
+		$this->assertTrue( $settings,
 			'Test default settings failed: {"Monitoring":{"activate":false} (should be true)');
 	}
 
@@ -45,8 +48,8 @@ class SettingsTest extends WP_UnitTestCase
 	 */
 	public function settingsFormat( $testCode = 'UNKNOW' )
 	{
-		$settings = json_decode( get_option( Settings::NAME ), null );
-		$this->assertNotNull( $settings,
+		$settings = get_option( Settings::NAME );
+		$this->assertNotFalse( $settings,
 			'Settings format incorrect after test ' . $testCode );
     }
 
@@ -60,7 +63,7 @@ class SettingsTest extends WP_UnitTestCase
     {
 	    $this->assertTrue(
 		    $this->settings->getSetting() ===
-		    Util::object_to_array( json_decode( get_option( Settings::NAME ), null ) ),
+            get_option( Settings::NAME ),
 		    'getSettings doesn\'t return all settings.' );
     }
 
@@ -120,7 +123,7 @@ class SettingsTest extends WP_UnitTestCase
 	 */
     public function incorrectSetSetting()
     {
-	    $correctSettings = Util::object_to_array( json_decode( get_option( Settings::NAME ), null ) );
+	    $correctSettings = get_option( Settings::NAME );
 	    $failSettings = self::failDataProvider();
 
 	    foreach( $failSettings as $message => $setting )

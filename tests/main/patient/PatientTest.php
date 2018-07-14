@@ -3,9 +3,10 @@
 namespace Dinet\Tests\Patient;
 
 use Dinet\Patient\Patient;
+use Dinet\Patient\Weight;
 use WP_UnitTestCase;
 
-require_once '/var/www/html/Dinet/src/wp-content/plugins/dinet/app/main/patient/Patient.php';
+require_once '/var/www/html/Dinet/src/wp-content/plugins/dinet/app/main/patient/model/Patient.php';
 
 class PatientTest extends WP_UnitTestCase
 {
@@ -68,6 +69,7 @@ class PatientTest extends WP_UnitTestCase
      */
     public function weightEmpty()
     {
+        $this->expectException(\TypeError::class);
         $this->assertEmpty( $this->Patient->getWeight() );
     }
 
@@ -77,8 +79,10 @@ class PatientTest extends WP_UnitTestCase
     public function weightGiven()
     {
         $weight = 55.5;
-        $this->Patient->setWeight( $weight );
-        $this->assertEquals( $weight, $this->Patient->getWeight() );
+        $tstamp = 1518178286;
+        $this->Patient->setWeight( (new Weight())->setValue($weight)->setTimestamp($tstamp) );
+        $this->assertEquals( $weight, $this->Patient->getWeight()->getValue() );
+        $this->assertEquals( $tstamp, $this->Patient->getWeight()->getTimestamp() );
     }
 
     /**

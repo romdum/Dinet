@@ -4,10 +4,11 @@ namespace Dinet\Tests\Patient;
 
 use Dinet\Patient\Patient;
 use Dinet\Patient\PatientCtrl;
+use Dinet\Patient\Weight;
 use WP_UnitTestCase;
 
 require_once '/var/www/html/Dinet/src/wp-content/plugins/dinet/app/main/utils/UtilPath.php';
-require_once '/var/www/html/Dinet/src/wp-content/plugins/dinet/app/main/patient/PatientCtrl.php';
+require_once '/var/www/html/Dinet/src/wp-content/plugins/dinet/app/main/patient/controller/PatientCtrl.php';
 
 class PatientCtrlTest extends WP_UnitTestCase
 {
@@ -52,7 +53,7 @@ class PatientCtrlTest extends WP_UnitTestCase
         $Patient = new Patient( $userId );
         $this->PatientCtrl->setPatient( $Patient );
 
-        $this->assertEquals( [], $this->PatientCtrl->getWeightHistory() );
+        $this->assertEquals( [], $this->PatientCtrl->getWeightHistory()->getValues() );
     }
 
     /**
@@ -68,13 +69,17 @@ class PatientCtrlTest extends WP_UnitTestCase
         update_user_meta( $Patient->getUserId(), 'dinetWeight_1518178286', 56 );
         update_user_meta( $Patient->getUserId(), 'dinetWeight_1518378287', 57 );
 
-        $metaKey = 'meta_key';
-        $metaValue = 'meta_value';
+        $weightHistory = $this->PatientCtrl->getWeightHistory()->getValues();
+
         $this->assertEquals( [
-            [$metaKey => '1518378287', $metaValue => '57'],
-            [$metaKey => '1518178286', $metaValue => '56'],
-            [$metaKey => '1511378285', $metaValue => '55'],
-        ], $this->PatientCtrl->getWeightHistory() );
+            [1518378287 => 57],
+            [1518178286 => 56],
+            [1511378285 => 55],
+        ], [
+            [$weightHistory[0]->getTimeStamp() => $weightHistory[0]->getValue()],
+            [$weightHistory[1]->getTimeStamp() => $weightHistory[1]->getValue()],
+            [$weightHistory[2]->getTimeStamp() => $weightHistory[2]->getValue()],
+        ]);
     }
 
     /**
