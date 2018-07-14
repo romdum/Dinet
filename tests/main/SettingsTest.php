@@ -8,10 +8,10 @@ use Dinet\Util;
 use stdClass;
 use \WP_UnitTestCase;
 
-require_once getenv( 'WP_DEVELOP_DIR' ) . 'src/wp-content/plugins/dinet/Dinet.php';
-require_once getenv( 'WP_DEVELOP_DIR' ) . 'src/wp-content/plugins/dinet/app/main/Settings.php';
-require_once getenv( 'WP_DEVELOP_DIR' ) . 'src/wp-content/plugins/dinet/app/main/SettingsEnum.php';
-require_once getenv( 'WP_DEVELOP_DIR' ) . 'src/wp-content/plugins/dinet/app/main/utils/Util.php';
+require_once __DIR__ . '/../../Dinet.php';
+require_once __DIR__ . '/../../app/main/Settings.php';
+require_once __DIR__ . '/../../app/main/SettingsEnum.php';
+require_once __DIR__ . '/../../app/main/utils/Util.php';
 
 class SettingsTest extends WP_UnitTestCase
 {

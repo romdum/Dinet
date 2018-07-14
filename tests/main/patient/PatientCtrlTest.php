@@ -4,11 +4,10 @@ namespace Dinet\Tests\Patient;
 
 use Dinet\Patient\Patient;
 use Dinet\Patient\PatientCtrl;
-use Dinet\Patient\Weight;
 use WP_UnitTestCase;
 
-require_once '/var/www/html/Dinet/src/wp-content/plugins/dinet/app/main/utils/UtilPath.php';
-require_once '/var/www/html/Dinet/src/wp-content/plugins/dinet/app/main/patient/controller/PatientCtrl.php';
+require_once __DIR__ . '/../../../app/main/utils/UtilPath.php';
+require_once __DIR__ . '/../../../app/main/patient/controller/PatientCtrl.php';
 
 class PatientCtrlTest extends WP_UnitTestCase
 {

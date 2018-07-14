@@ -6,7 +6,7 @@ use Dinet\Patient\Patient;
 use Dinet\Patient\Weight;
 use WP_UnitTestCase;
 
-require_once '/var/www/html/Dinet/src/wp-content/plugins/dinet/app/main/patient/model/Patient.php';
+require_once __DIR__ . '/../../../app/main/patient/model/Patient.php';
 
 class PatientTest extends WP_UnitTestCase
 {
