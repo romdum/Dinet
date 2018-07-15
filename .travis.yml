@@ -47,4 +47,5 @@ before_script:
   - mv ./* /tmp/wordpress/wp-content/plugins/dinet
 
 script:
-  - phpunit /tmp/wordpress/wp-content/plugins/dinet
+  - cd /tmp/wordpress/wp-content/plugins/dinet
+  - phpunit
