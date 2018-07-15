@@ -12,14 +12,6 @@ branches:
   only:
     - master
     - develop
-    - test
-
-addons:
-  hosts:
-    - wp.localhost
-#  apt:
-#    packages:
-#      - php-mysql
 
 cache:
   apt: true
@@ -39,49 +31,7 @@ matrix:
       env: WP_VERSION=master
 
 before_install:
-  - composer global require "phpunit/phpunit=4.8.*|5.7.*"
-  # create the databases that will be used in the tests
-  - mysql -e "create database IF NOT EXISTS wordpress_test;" -uroot
-  # set up folders
-#  - mkdir -p /tmp/wordpress
-  - mkdir tools
-  # install wp-cli in the `tools` folder
-  - wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -P $(pwd)/tools/
-  - chmod +x tools/wp-cli.phar && mv tools/wp-cli.phar tools/wp
-  # append the `tools` folder to the PATH
-  - export PATH=$PATH:$(pwd)/tools
-  # prepend the `vendor/bin` folder the PATH
-  - export PATH=vendor/bin:$PATH
-
-install:
-  - composer install --prefer-dist
-
-  # install WordPress in the `wordpress` folder
-  - svn co --quiet --non-interactive --force https://develop.svn.wordpress.org/trunk/ /tmp/wordpress
-  #- wp core download --version=latest --path=/tmp/wordpress/src
-  #- wp config create --path="/tmp/wordpress/src/" --dbname="wordpress_test" --dbuser="root" --dbpass="" --dbhost="127.0.0.1" --dbprefix="wp_test_"
-  - cp /tmp/wordpress/wp-tests-config-sample.php /tmp/wordpress/wp-tests-config.php
-  - sed -i "s/youremptytestdbnamehere/wordpress_test/" /tmp/wordpress/wp-tests-config.php
-  - sed -i "s/yourusernamehere/root/" /tmp/wordpress/wp-tests-config.php
-  - sed -i "s/yourpasswordhere//" /tmp/wordpress/wp-tests-config.php
-#  - wp core install --path="/tmp/wordpress/src/" --url="http://wp.localhost" --title="Test" --admin_user="admin" --admin_password="admin" --admin_email="admin@admin.fr" --skip-email
-  - mkdir /tmp/wordpress/src/wp-content/plugins/dinet
-  - mv ./* /tmp/wordpress/src/wp-content/plugins/dinet
-  # flush rewrite rules to use pretty permalinks
-#  - wp rewrite structure '/%postname%/' --hard
-
-  # create the two subdomain sites I need
-#  - wp site create --slug="$WP_SUBDOMAIN_1" --title="$WP_SUBDOMAIN_1_TITLE"
-#  - wp site create --slug="$WP_SUBDOMAIN_2" --title="$WP_SUBDOMAIN_2_TITLE"
-
-  # update WordPress database to avoid prompts
-  #- wp core update-db --network
-
-  # export a dump of the just installed database to the _data folder
-#  - wp db export $TRAVIS_BUILD_DIR/tests/_data/dump.sql
-
-  # get back to the build folder
-#  - cd $TRAVIS_BUILD_DIR
+  - composer global require "phpunit/phpunit=6.*"
 
 before_script:
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
@@ -91,9 +41,9 @@ before_script:
     else
       echo "xdebug.ini does not exist"
     fi
-  - bash /tmp/wordpress/src/wp-content/plugins/dinet/tests/bin/install-wp-tests.sh wordpress_test root '' localhost latest
+  - bash tests/bin/install-wp-tests.sh wordpress_test root '' localhost latest
+  - mkdir /tmp/wordpress/wp-content/plugins/dinet
+  - mv ./* /tmp/wordpress/wp-content/plugins/dinet
 
 script:
-  - cd /tmp/wordpress/src/wp-content/plugins/dinet
-  - phpunit
-#  - WP_MULTISITE=0 phpunit
+  - phpunit /tmp/wordpress/wp-content/plugins/dinet
