@@ -36,7 +36,8 @@ class PatientCtrlTest extends WP_UnitTestCase
      */
     public function withPatient()
     {
-        $Patient = new Patient( 1 );
+        $userId = wp_create_user( 'withPatientTest', '' );
+        $Patient = new Patient( $userId );
         $this->PatientCtrl->setPatient( $Patient );
 
         $this->assertEquals( $Patient, $this->PatientCtrl->getPatient() );
@@ -47,9 +48,36 @@ class PatientCtrlTest extends WP_UnitTestCase
      */
     public function weightHistoryEmpty()
     {
-        $Patient = new Patient( 1 );
+        $userId = wp_create_user( 'weightHistoryEmptyTest', '' );
+        $Patient = new Patient( $userId );
         $this->PatientCtrl->setPatient( $Patient );
 
         $this->assertEquals( [], $this->PatientCtrl->getWeightHistory()->getValues() );
+    }
+
+    /**
+     * @test
+     */
+    public function weightHistorySimple()
+    {
+        $userId = wp_create_user( 'weightHistorySimpleTest', '' );
+        $Patient = new Patient( $userId );
+        $this->PatientCtrl->setPatient( $Patient );
+
+        update_user_meta( $Patient->getUserId(), 'dinetWeight_1511378285', 55 );
+        update_user_meta( $Patient->getUserId(), 'dinetWeight_1518178286', 56 );
+        update_user_meta( $Patient->getUserId(), 'dinetWeight_1518378287', 57 );
+
+        $weightHistory = $this->PatientCtrl->getWeightHistory()->getValues();
+
+        $this->assertEquals( [
+            [1518378287 => 57],
+            [1518178286 => 56],
+            [1511378285 => 55],
+        ], [
+            [$weightHistory[0]->getTimeStamp() => $weightHistory[0]->getValue()],
+            [$weightHistory[1]->getTimeStamp() => $weightHistory[1]->getValue()],
+            [$weightHistory[2]->getTimeStamp() => $weightHistory[2]->getValue()],
+        ]);
     }
 }

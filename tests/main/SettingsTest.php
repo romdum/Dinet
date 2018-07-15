@@ -29,6 +29,7 @@ class SettingsTest extends WP_UnitTestCase
 	 * Test default settings values.
 	 *
 	 * @covers Settings::getSetting
+     * @test
 	 */
 	public function createDefaultOption()
 	{
@@ -43,6 +44,7 @@ class SettingsTest extends WP_UnitTestCase
 	 * @after
 	 * @coversNothing
 	 * @param string $testCode
+     * @test
 	 */
 	public function settingsFormat( $testCode = 'UNKNOW' )
 	{
@@ -55,6 +57,7 @@ class SettingsTest extends WP_UnitTestCase
 	 * Test to get all settings.
 	 *
 	 * @covers Settings::getSettings
+     * @test
 	 */
     public function getAllSettings()
     {
@@ -69,6 +72,7 @@ class SettingsTest extends WP_UnitTestCase
 	 *
 	 * @covers Settings::setSetting
 	 * @covers Settings::getSetting
+     * @test
 	 */
     public function setSetting()
     {
@@ -83,6 +87,7 @@ class SettingsTest extends WP_UnitTestCase
 	 *
 	 * @covers Settings::setSetting
 	 * @covers Settings::getSetting
+     * @test
 	 */
     public function createSetting()
     {
@@ -97,6 +102,7 @@ class SettingsTest extends WP_UnitTestCase
 	 *
 	 * @covers Settings::getSetting
 	 * @dataProvider SettingsTest::failDataProvider
+     * @test
 	 */
     public function incorrectGetSetting()
     {
@@ -113,6 +119,7 @@ class SettingsTest extends WP_UnitTestCase
 	 *
 	 * @covers Settings::setSetting
 	 * @covers Settings::getSetting
+     * @test
 	 */
     public function incorrectSetSetting()
     {

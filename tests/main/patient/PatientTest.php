@@ -73,7 +73,6 @@ class PatientTest extends WP_UnitTestCase
     }
 
     /**
-     * @expectedException \TypeError
      * @test
      */
     public function weightGiven()
