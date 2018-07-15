@@ -64,11 +64,12 @@ class PatientTest extends WP_UnitTestCase
     }
 
     /**
+     * @expectedException \TypeError
      * @test
      */
     public function weightEmpty()
     {
-        $this->assertEmpty( $this->Patient->getWeight() );
+        $this->Patient->getWeight();
     }
 
     /**
