@@ -18,8 +18,7 @@ class PatientTest extends WP_UnitTestCase
     {
         parent::__construct( $name, $data, $dataName );
 
-        $userId = wp_create_user( self::USERNAME, 'password' );
-        $this->Patient = new Patient( $userId );
+        $this->Patient = new Patient( 1 );
     }
 
     /**
@@ -69,11 +68,11 @@ class PatientTest extends WP_UnitTestCase
      */
     public function weightEmpty()
     {
-        $this->expectException(\TypeError::class);
         $this->assertEmpty( $this->Patient->getWeight() );
     }
 
     /**
+     * @expectedException \TypeError
      * @test
      */
     public function weightGiven()
